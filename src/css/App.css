@@ -1,0 +1,395 @@
+.App {
+  height: 90vh;
+  text-align: center;
+}
+
+select {  
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+
+  color: #444;
+  background-color: #fff;
+
+  padding: 0.6em 1.4em 0.5em 0.8em;
+  margin: 0;
+
+  border: 1px solid #aaa;
+  border-radius: 0.5em;
+  box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
+}
+
+select:hover {
+  border-color: #888;
+}
+
+select:focus {
+  border-color: #aaa;
+  box-shadow: 0 0 1px 3px rgba(59, 153, 252, 0.7);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #222;
+  outline: none;
+}
+
+select:disabled {
+  opacity: 0.5;
+}
+
+.button-wrapper{
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  display: flex;
+  justify-content: flex-end; 
+  margin-bottom: 24px;
+}
+
+.btn {    
+  margin : 0 8px 6px;
+  padding: 8px;
+  background-color: #7baced;
+  color : white;    
+  border: 1px solid white;
+}
+
+.btn.close {    
+  border: 1px solid 565656;
+}
+
+.btn.check {
+  background-color: white;
+  border: 1px solid black;
+}
+
+.btn, .btn.close:hover {
+  cursor: pointer;  
+}
+
+.table-wrap {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.table-wrap .btn_wrap .btn{
+  margin-left: auto;
+}
+
+table {
+  width: 100%;
+  border: 1px #a39485 solid;
+  font-size: .9em;
+  box-shadow: 0 2px 5px rgba(0,0,0,.4);
+  border-collapse: collapse;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+th {
+  text-align: center;
+}
+  
+thead {
+  font-weight: bold;
+  color: #fff;
+  background: #73685d;
+}
+  
+ td, th {
+  padding: 1em .5em;
+  vertical-align: middle;
+}
+  
+ td {
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  background: #fff;
+}
+
+.warpper {  
+  max-width: 1170px;
+  margin: 0 auto;
+}
+
+.regist {
+    display: flex;
+    flex-direction: column;
+    margin: 10rem auto;
+    width: 30%;    
+    border : 2px solid #7baced; 
+}
+
+.regist .title {
+  margin-top: 0;
+  background-color: #7baced;
+  color:white;  
+  padding : 8px;
+}
+
+.regist .list {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.regist .list > label {
+    margin: 8px 12px 8px 12px;
+}
+
+.regist input {  
+    border: 1px solid #949494;
+    margin : 0 12px 10px 12px;
+    padding : 8px;
+}
+
+.blind {
+  display: none;
+}
+
+.search-wrap {
+  display: inline-flex;
+  width: 100%;
+  margin : 0 auto 12px;  
+}
+
+.search-wrap input {
+  height: 40px;
+  width: 576px;
+  font-size: 14px;
+  padding: 7px 14px;
+  border: 1px solid #ccc;
+  margin: 0 0 0 auto
+}
+.search-wrap input:focus {
+  border-color: #333;
+  outline: 0;
+  border-width: 1px;
+}
+.search-wrap .btn {  
+  height: 40px;
+  width: 108px;
+  padding: 0;
+  font-size: 16px;
+  margin: 0 auto auto 12px;
+}
+
+#container {
+    display: flex;   
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    height: 100%;
+}
+
+/*modal 상위 css*/
+.modal_box {    
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+}
+
+/* modal contents css*/
+.modal_content {
+    background-color: #fefefe;
+    border-radius: 10px;
+    margin: 15% auto;
+    padding: 20px;
+    border : 1px solid #888;
+    width: 20%;
+}
+
+.modal_content > input {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.modal_title {
+    display:flex;
+    justify-content: space-around;
+}
+
+
+.modal_title > button {    
+  background-color: white;
+  color:#545454;
+}
+
+p.warning {
+  color : red;
+  margin : 0px 12px 8px 12px
+}
+p.accept {
+  color : blue;
+  margin : 0px 12px 8px 12px
+}
+
+#nav1 {
+  height: 80px;
+  margin-bottom: 12px;
+  width: 1170px;
+  margin: 0 auto;
+}
+
+#nav1>a {
+  display: block; /* a태그는 글자성격 = inline */
+  float: left;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 80px;
+  padding: 0 30px;
+}
+#nav1>ul {
+  float: right;
+}
+#nav1>ul li {
+  float: left;  
+  line-height: 80px;
+  list-style: none;
+}
+
+/* pagination css */
+ul.pagination  {
+  display: flex; justify-content: center; margin-top: 15px;
+  
+}
+
+ul.pagination  li {
+  display: inline-block;
+  list-style: none;
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+}
+
+ul.pagination li a { text-decoration: none; color: #337ab7; font-size: 1rem; }
+
+ul.pagination > li.active {
+  background-color: #b9e5ff;
+  color: white;
+  border-radius: 5px;
+}
+
+ul.pagination > li:hover:not(.active) {background-color: #ddd;}
+
+
+
+/* Desktop First */
+@media all and (min-width : 768px) and (max-width : 1023px) {
+  .btn {    
+    margin: 0 6px 6px;
+    padding: 6px;
+  }
+  .wrapper {  
+    max-width: 1023px;
+    margin: 0 auto;
+  }
+  table {
+    margin: 0 6px 6px;
+  }
+  #nav1 {
+    width: 100%;
+  }
+}
+
+@media all and (min-width : 640px) and (max-width : 767px) {
+  .btn {    
+    margin: 0 4px 6px;
+    padding: 4px;
+  }
+  .wrapper {  
+    max-width: 767px;
+    margin: 0 auto;
+  }
+  table {
+    margin: 0 4px 6px;
+  }
+  #nav1 {
+    height: 60px;
+    width: 100%;
+  }
+}
+
+@media all and (min-width : 140px) and (max-width : 639px) {
+  .btn {    
+    margin: 0 2px 6px;
+    padding: 2px;
+  }
+  .wrapper {  
+    max-width: 639px;
+    margin: 0 auto;
+  }
+  table {
+    margin: 0 2px 6px;
+  }
+  #nav1 {
+    height: 40px;
+    width: 100%;
+  }
+}
+
+/* 업무 보고서 css */
+#reportWrapper {
+  width: 100%;
+}
+
+#reportWrapper table td {
+  border: 1px solid rgba(0, 0, 0, .2);
+}
+
+#reportWrapper table td.long_content {
+  height: 160px;
+}
+
+#reportWrapper table td.none {
+  border : none;
+}
+
+#reportWrapper table tr.long_content {
+  min-height: 160px;
+}
+
+#reportWrapper table td div {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#reportWrapper table td div > p {
+  position: absolute;
+  bottom: 2%;
+  right : 3%;
+}
+
+#reportWrapper table td div input {
+  height: 100%;
+  width: 100%;  
+  border: none;
+  margin: 0;
+}
+
+#reportWrapper table td div textarea {
+  height: 100%;
+  width: 100%;
+  border: none;
+  margin: 0;
+  resize: none;
+  font-size: 18px;
+}
+
+#reportWrapper table td .r_short_input {
+  width: 100px;
+  border: none;
+}
+
+#reportWrapper .suffix_day::after {
+  content: "요일";
+}

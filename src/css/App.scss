@@ -1,0 +1,249 @@
+/* Desktop First */
+/* Break Point */
+$laptop: 1023px;
+$tablet: 767px;
+$phone: 639px;
+
+@mixin laptop {
+    @media (max-width: #{$laptop}){
+        @content
+    }
+};
+
+@mixin tablet {
+    @media (max-width: #{$tablet}){
+        @content
+    }
+};
+
+@mixin phone {
+    @media (max-width: #{$phone}){
+        @content
+    }
+};
+
+.App {
+  height: 100vh;
+  text-align: center;
+}
+
+button {    
+    margin : 0 12px 6px 12px;
+    padding: 8px;
+    background-color: #555555;
+    color : white;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+button.close {
+    padding : 6px;
+    border: 1px solid 565656;
+}
+
+button, button.close:hover {
+  cursor: pointer;  
+}
+
+table {
+  border: 1px #a39485 solid;
+  font-size: .9em;
+  box-shadow: 0 2px 5px rgba(0,0,0,.25);
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+th {
+  text-align: center;
+}
+  
+thead {
+  font-weight: bold;
+  color: #fff;
+  background: #73685d;
+}
+  
+ td, th {
+  padding: 1em .5em;
+  vertical-align: middle;
+}
+  
+ td {
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  background: #fff;
+}
+
+#container {
+    display: flex;   
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    height: 100%;
+}
+
+.wrapper {
+  padding-left: 20px;
+  padding-right: 20px;
+  max-width: 1170px;
+  margin: 0 auto;
+}
+
+.regist {
+    display: flex;
+    flex-direction: column;
+    margin: 10rem auto;
+    width: 30%;    
+    border : 2px solid #7baced; 
+}
+
+.regist .title {
+  margin-top: 0;
+  background-color: #7baced;
+  color:white;  
+  padding : 8px;
+}
+
+.regist .list {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.regist .list > label {
+    margin: 8px 12px 8px 12px;
+}
+
+.regist input {  
+    border: 1px solid #949494;
+    margin : 0 12px 10px 12px;
+    padding : 8px;
+}
+
+/*modal 상위 css*/
+.modal_box {    
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+}
+
+/* modal contents css*/
+.modal_content {
+    background-color: #fefefe;
+    border-radius: 10px;
+    margin: 15% auto;
+    padding: 20px;
+    border : 1px solid #888;
+    width: 20%;
+}
+
+.modal_title {
+    display:flex;
+    justify-content: space-around;
+}
+
+
+.modal_title > button {    
+    border: 0;
+    background-color: #fefefe;
+}
+
+p.warning {
+  color : red;
+  margin : 0px 12px 8px 12px
+}
+p.accept {
+  color : blue;
+  margin : 0px 12px 8px 12px
+}
+
+#nav1 {
+  height: 80px;
+}
+
+#nav1>a {
+  display: block; /* a태그는 글자성격 = inline */
+  float: left;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 80px;
+  padding: 0 30px;
+}
+#nav1>ul {
+  float: right;
+}
+#nav1>ul li {
+  float: left;
+  padding: 0 30px;
+  line-height: 80px;
+  list-style: none;
+}
+
+/* pagination css */
+ul.pagination  {
+  display: flex; justify-content: center; margin-top: 15px;
+  
+}
+
+ul.pagination  li {
+  display: inline-block;
+  list-style: none;
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+}
+
+ul.pagination li a { text-decoration: none; color: #337ab7; font-size: 1rem; }
+
+ul.pagination > li.active {
+  background-color: #b9e5ff;
+  color: white;
+  border-radius: 5px;
+}
+
+ul.pagination > li:hover:not(.active) {background-color: #ddd;}
+
+.search-wrap {
+  position: relative;
+/*   padding-right: 124px; */
+  margin: 0 auto;
+  width: 80%;
+  max-width: 564px;
+}
+#board-search .search-window .search-wrap input {
+  height: 40px;
+  width: 100%;
+  font-size: 14px;
+  padding: 7px 14px;
+  border: 1px solid #ccc;
+}
+#board-search .search-window .search-wrap input:focus {
+  border-color: #333;
+  outline: 0;
+  border-width: 1px;
+}
+#board-search .search-window .search-wrap .btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 108px;
+  padding: 0;
+  font-size: 16px;
+}
+
+
+
+
+

@@ -1,0 +1,25 @@
+.container {    
+    width: 100%; 
+    height: 100%;    
+}
+
+#regist {
+    display: flex;    
+    flex-direction: row;    
+    width: 25%;
+    padding : 5px;
+    border-radius: 8px; 
+    border : 2px solid black; 
+}
+
+#regist li {
+    text-align: right;
+    list-style: none;
+    margin: 0 0 8px 6px;
+}
+
+#regist > div > li > input {
+    border: none;
+    border-bottom: 1px solid #949494;
+    margin-left: 6px;
+}

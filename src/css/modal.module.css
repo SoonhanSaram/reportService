@@ -1,0 +1,32 @@
+/*modal 상위 css*/
+.modal_box {    
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+}
+
+/* modal contents css*/
+.modal_content {
+    background-color: #fefefe;
+    border-radius: 10px;
+    margin: 15% auto;
+    padding: 20px;
+    border : 1px solid #888;
+    width: 20%;
+}
+
+.modal_title {
+    display:flex;
+    justify-content: space-around;
+}
+
+
+.modal_title > button {    
+    border: 0;
+    background-color: #fefefe;
+}
