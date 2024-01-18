@@ -25,6 +25,7 @@ import content from '../routes/content.js';
 
 // jwt 인증 미들웨어
 import { authorizationJwt } from '../middleware/authorizationJwt.js';
+import { refresh } from '../middleware/refresh.js';
 
 // db 정보 import 
 import db from '../models/index.js'
@@ -57,8 +58,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join("public")));
+
 // jwt 인증 미들웨어 적용
 app.use('/admin', authorizationJwt);
+app.use('/content', authorizationJwt);
+app.use('/refresh', refresh)
+
 
 // router link enable
 app.use('/regist', regist);

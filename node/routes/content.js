@@ -15,10 +15,11 @@ const router = express.Router();
 
 
 router.get('/getReports', async (req, res) => {
-    console.log(req.params);
-    const offset = 0;
-    const limit = 20;
-    const author = 'Author '
+    let { offset, limit } = req.query;
+    offset = parseInt(offset);
+    limit = parseInt(limit);
+    const author = req.name;
+
     try {
         /**
         const reports = await daily.findAll({
@@ -53,10 +54,13 @@ router.get('/getReports', async (req, res) => {
 
         const count = await reportCommon.count({ where: { author: author } });
 
-        console.log(count);
+        // console.log(count);
 
-        const query = `SELECT a.*, b.work_date, b.work_plan, b.suggestions, b.unique_points from (SELECT * from reportscommon where author = ${author} limit ${offset}, ${limit}) a  join dailyreports b on a.report_seq = b.report_seq` // 2ms
+        const query = `SELECT a.*, b.work_date, b.work_plan, b.suggestions, b.unique_points from (SELECT * from reportscommon where author = '${author}' limit ${offset}, ${limit}) a  join dailyreports b on a.report_seq = b.report_seq` // 2ms
+
         const reports = await reportCommon.sequelize.query(query, { type: QueryTypes.SELECT, benchmark: true });
+        console.log(reports);
+
 
         res.status(200).send({ message: '보고서 리스트 가져오기 성공', list: reports, count: count });
     } catch (error) {
@@ -71,10 +75,11 @@ router.post('/uploadReport', async (req, res) => {
 
     const { reportType, toworkDay, toworkMonth, toworkYear, workingTitle, userName } = req.body;
     const startDate = new Date(toworkYear, parseInt(toworkMonth, 10) - 1, toworkDay, 9);
+
+    const commonResponse = await reportCommon.create({ author: userName, approval_status: '0', objectives: workingTitle, report_type: reportType }, { transaction: t });
     if (reportType === '1') {
         const { plan, claim, etc } = req.body;
         try {
-            const commonResponse = await reportCommon.create({ author: userName, approval_status: '0', objectives: workingTitle }, { transaction: t });
             // console.log(commonResponse);
             await daily.create({ report_seq: commonResponse.report_seq, work_date: startDate, work_plan: plan, suggestions: claim, unique_points: etc }, { transaction: t });
             await t.commit();
@@ -87,9 +92,7 @@ router.post('/uploadReport', async (req, res) => {
         const { plan0, claim0, etc0, plan1, claim1, etc1, plan2, claim2, etc2, plan3, claim3, etc3, plan4, claim4, etc4, } = req.body
         const endDate = new Date(toworkYear, parseInt(toworkMonth, 10) - 1, toworkDay + 4, 9) // 업무 완료일 설정
         try {
-            const commonResponse = await reportCommon.create({ author: userName, approval_status: '0', objectives: workingTitle }, { transaction: t });
             // console.log(commonResponse.report_seq, startDate, endDate);
-
             // sequelize 로깅 logging: (...msg) => console.log(msg) 
             await weekly.create(
                 {

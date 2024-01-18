@@ -8,7 +8,7 @@ import { Login } from "../component/login/login";
 import { DashBoard } from "../component/browse/dashboard";
 import { ManageMember } from "../component/admin/manageMember";
 import { ManageForm } from "../component/admin/manageForm";
-import { ManageCop, ManageCorp } from "../component/admin/manageCorp";
+import { ManageCorp } from "../component/admin/manageCorp";
 import { UploadReport } from "../component/browse/uploadReport";
 import { ReportMain } from "../component/browse/reportMain";
 

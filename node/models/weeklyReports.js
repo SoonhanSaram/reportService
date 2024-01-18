@@ -26,5 +26,12 @@ export default (sequelize) => {
         sequelize,
         tableName: 'weeklyreports',
         timestamps: false,
+        // CASCADE 설정;
+        references: {
+            model: 'reportscommon',
+            key: 'report_seq',
+            onDelete: 'CASCADE',  // 삭제 시 CASCADE 설정
+            onUpdate: 'CASCADE'   // 업데이트 시 CASCADE 설정
+        }
     });
 }

@@ -337,6 +337,12 @@ ul.pagination > li:hover:not(.active) {background-color: #ddd;}
 }
 
 /* 업무 보고서 css */
+.modal_box > #reportWrapper {
+  width: 70%;
+  height: 94%;
+  margin: auto;
+}
+
 #reportWrapper {
   width: 100%;
 }

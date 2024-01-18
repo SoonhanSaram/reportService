@@ -4,6 +4,7 @@
 import { jwtDecode } from "jwt-decode";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Cookies } from 'react-cookie'
+import { setUser } from "../js/common";
 
 // 컴포넌트에서 공통적으로 사용 할 store 개시
 const CommonContext = createContext();
@@ -14,6 +15,7 @@ const useCommonContext = () => {
 }
 
 const CommonContextPovider = ({ children }) => {
+
     // modal on/off 를 할 변수
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [clickedCorp, setClickedCorp] = useState();
@@ -54,15 +56,60 @@ const CommonContextPovider = ({ children }) => {
     // refreshToken 을 cookie 에서 가져오는 함수
     const getRefreshToken = () => cookie.get('refreshToken')
 
-    // userInfo setting 을 위한 함수
-    const setUser = async (token) => {
-        const decodingData = jwtDecode(token);
-        console.log(decodingData);
-        setUserInfo({
-            userName: decodingData['name'],
-            userAuthority: decodingData['autho'],
-            userBelongto: decodingData['cName'],
+    const currentTime = new Date();
+    // 요일을 한글로 반환 (함수)
+    function getKoreanDayOfWeek(dayIndex) {
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        return days[dayIndex];
+    }
+
+    // 년/월/일/요일 로 date 값 변환
+    const [date, setDate] = useState({
+        year: currentTime.getFullYear(),
+        month: currentTime.getMonth() + 1,
+        day: currentTime.getDate(),
+        dayOfWeek: getKoreanDayOfWeek(currentTime.getDay()),
+        lastDay: new Date(currentTime.getFullYear(), currentTime.getMonth() + 1, 0).getDate(),
+    })
+
+    const [inputValues, setInputValues] = useState({
+        toworkDay: undefined,
+        toworkMonth: undefined,
+        toworkYear: undefined,
+        workingTitle: undefined,
+    });
+
+    const handleInputValues = (e) => {
+        const name = e.target.name
+        const value = e.target.value
+
+        setInputValues({
+            ...inputValues,
+            [name]: value,
         })
+    }
+
+    const newDate = (newDate) => {
+
+        function getKoreanDayOfWeek(dayIndex) {
+            const days = ['일', '월', '화', '수', '목', '금', '토'];
+            return days[dayIndex];
+        }
+
+        const year = newDate.getFullYear();
+        const month = newDate.getMonth() + 1;
+        const day = newDate.getDate();
+        const dayOfWeek = getKoreanDayOfWeek(newDate.getDay());
+        const lastDay = new Date(year, month, 0).getDate();
+
+        setDate((prev) => ({
+            ...prev,
+            year: year,
+            month: month,
+            day: day,
+            dayOfWeek: dayOfWeek,
+            lastDay: lastDay,
+        }))
     }
 
     // accesstoken 이 있다면 회원정보 state 에 재할당
@@ -71,14 +118,14 @@ const CommonContextPovider = ({ children }) => {
         const refreshToken = getRefreshToken();
 
         if (token) {
-            setUser(token);
+            setUser(token, setUserInfo);
         } else if (!token && refreshToken) {
 
         } else if (!token && !refreshToken) {
 
         }
-        console.log('이펙트 실행');
-    }, [getToken()])
+
+    }, [])
 
     function openModal() {
         setIsOpenModal(!isOpenModal)
@@ -177,7 +224,7 @@ const CommonContextPovider = ({ children }) => {
         }
     }
 
-    const props = { openModal, isOpenModal, clickedCorp, setClickedCorp, setUserInfo, userInfo, setToken, getToken, memberListInfo, setMemberListInfo, paging, setPaging, logOut, validateAndFetch, getRefreshToken, dailyReportList, setDailyReportList }
+    const props = { openModal, isOpenModal, clickedCorp, setClickedCorp, setUserInfo, userInfo, setToken, getToken, memberListInfo, setMemberListInfo, paging, setPaging, logOut, validateAndFetch, getRefreshToken, dailyReportList, setDailyReportList, date, handleInputValues, inputValues, cookie }
     return <CommonContext.Provider value={props}>{children}</CommonContext.Provider>;
 }
 

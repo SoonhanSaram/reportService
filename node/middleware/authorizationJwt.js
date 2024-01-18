@@ -6,8 +6,9 @@ export const authorizationJwt = (req, res, next) => {
         const result = verifyToken(token);
 
         if (result.ok) {
-            req.name = result.name;
-            req.role = result.autho;
+            // 다음 라우터들에게 전달하는 파라미터
+            req.name = result.id;
+            req.role = result.role;
             next();
         } else {
             console.log('인증 실패');

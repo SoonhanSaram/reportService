@@ -2,7 +2,7 @@ import { issueAccessToken, verifyToken, verifyRefreshToken } from '../module/con
 import jwt from 'jsonwebtoken'
 
 // accesstoken 만료시 refreshtoken 으로 accesstoken 재발급 함수
-const refresh = async (req, res) => {
+export const refresh = async (req, res) => {
     // headers 에서 토큰 존재 유무 확인
     if (req.headers.authorization && req.headers.refresh) {
         const authToken = req.headers.authorization.split('Bearer ')[1];
@@ -52,4 +52,3 @@ const refresh = async (req, res) => {
     }
 }
 
-module.exports = refresh;

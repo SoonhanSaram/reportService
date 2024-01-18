@@ -104,7 +104,6 @@ const Modal = (props) => {
         <div className="modal_box">
             {contents()}
         </div >
-
     )
 }
 

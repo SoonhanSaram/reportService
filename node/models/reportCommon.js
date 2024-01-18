@@ -11,7 +11,12 @@ export default (sequelize) => {
             type: Sequelize.DataTypes.STRING(255),
         },
         approval_status: {
-            type: Sequelize.DataTypes.STRING(2),
+            type: Sequelize.DataTypes.STRING(1),
+            allowNull: false,
+        },
+        // report type 추가 (fron에서 보고서 종류를 인식)
+        report_type: {
+            type: Sequelize.DataTypes.STRING(1),
             allowNull: false,
         },
         author: {

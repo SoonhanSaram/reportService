@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useCommonContext } from "../../provider/common"
 import { Paging } from "../common/pagination"
 import { PasswordModal } from "./passwordModal";
+import { refreshUser } from "../../js/common";
 
 export const ManageMember = () => {
-    const { getToken, memberListInfo, setMemberListInfo, setPaging, paging, isOpenModal, openModal } = useCommonContext();
+    const { getToken, memberListInfo, setMemberListInfo, setPaging, paging, isOpenModal, openModal, cookie, setUserInfo } = useCommonContext();
 
     const [name, setName] = useState();
     const { offset, limit } = paging;
@@ -25,8 +26,6 @@ export const ManageMember = () => {
 
     // 특정 아이디로 회원 검색
     const serchMember = async () => {
-        const accessToken = localStorage.getItem('accessToken');
-
         //  회원 리스트 초기화 
         setMemberListInfo({
             ...memberList,
@@ -37,14 +36,14 @@ export const ManageMember = () => {
         const fetchOption = {
             method: "GET",
             headers: {
-                'authorization': `Bearer ${accessToken}`
+                'authorization': `Bearer ${getToken()}`
             }
         };
         const response = await fetch(`/admin/searchMember/${offset}/${limit}/${name}`, fetchOption)
         // json data 로 변환
         const result = await response.json();
 
-        if (result != null) {
+        if (result.ok && result != null) {
             // result 결과가 있을 경우 회원 리스트 할당
             setMemberListInfo({
                 ...memberListInfo,
@@ -58,6 +57,9 @@ export const ManageMember = () => {
                     totalItems: result.countMember
                 }
             )
+        } else if (!result.ok) {
+            console.log('체크 2');
+            refreshUser(result.ok, cookie, setUserInfo)
         }
     }
 
@@ -119,7 +121,7 @@ export const ManageMember = () => {
         const result = await response.json();
         console.log(result);
 
-        if (result != null) {
+        if (result.ok && result != null) {
             // result 결과가 있을 경우 회원 리스트 할당
             setMemberListInfo({
                 ...memberListInfo,
@@ -133,6 +135,9 @@ export const ManageMember = () => {
                     totalItems: result.countMember
                 }
             )
+        } else if (!result.ok) {
+            console.log('체크 2');
+            refreshUser(result.ok, setUserInfo, cookie)
         }
     };
 
