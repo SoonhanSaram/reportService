@@ -22,14 +22,17 @@ router.post('/', async (req, res, next) => {
 
         // console.log('체크1');
         const accessToken = issueAccessToken(response.user_name, response.user_authority, corporation.corp_name);
+
+        // console.log('토큰 발급', accessToken);
+
         // console.log('체크2');
         const refreshToken = issueRefreshToken();
         // console.log('체크3');
-        // await redisClient.connect()
+        await redisClient.connect()
         // console.log('체크4');
-        // await redisClient.set(response.user_name, refreshToken);
+        await redisClient.set(response.user_name, refreshToken);
         // console.log('체크5');
-        // await redisClient.disconnect();
+        await redisClient.disconnect();
 
         res.cookie("refreshtoken", refreshToken, { expires: new Date(Date.now() + 900000), httpOnly: true, secure: true }).status(200).send({ message: "로그인 성공", data: { accesstoken: accessToken } });
     } catch (error) {
@@ -45,9 +48,8 @@ router.post('/logout', async (req, res, next) => {
     // log 남길 공간
 
     try {
-
-        const keyExists = await redisClient.exists(uName);
         await redisClient.connect();
+        const keyExists = await redisClient.exists(uName);
         // redis 에서 삭제
         await redisClient.del(uName);
         await redisClient.disconnect();

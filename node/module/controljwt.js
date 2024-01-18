@@ -1,7 +1,7 @@
 // 클라이언트가 가지고 있는 accessToken 을 검증하는 미들웨어 controljwt.js
 import jwt from 'jsonwebtoken'
 // 서버 secret code import 
-import { secret as configSecret, secret } from '../config/secret.js'
+import { secret } from '../config/secret.js'
 import { redisClient } from './redis.js'
 
 
@@ -17,11 +17,14 @@ const issueAccessToken = (uName, uAuthority, corpName) => {
 const verifyToken = (token) => {
     let decoded = null;
     try {
+        // console.log('토큰 인증 중', token);
         decoded = jwt.verify(token, secret);
+        // console.log('토큰 인증', decoded);
         return {
             ok: true,
             id: decoded.name,
-            role: decoded.autho
+            role: decoded.autho,
+            corp: decoded.cName,
         };
     } catch (error) {
         return {
@@ -39,20 +42,21 @@ const issueRefreshToken = () => {
     })
 };
 const verifyRefreshToken = async (token, uName) => {
-    // redis module 은 promise 를 반환하지 않는다고 한다.
-    const getAsync = promiseify(redisClient.get).bind(redisClient);
     try {
-        const data = await getAsync(uName);
+        await redisClient.connect();
+        const data = await redisClient.get(uName);
+
+        console.log('리프레시 토큰확인', data);
+
+        await redisClient.disconnect();
+
         if (token === data) {
-            try {
-                jwt.verify(token, secret);
-                return true
-            } catch (error) {
-                return false
-            }
+            jwt.verify(token, secret);
+            return true;
         } else {
             return false;
-        }
+        };
+
     } catch (error) {
         return false;
     }

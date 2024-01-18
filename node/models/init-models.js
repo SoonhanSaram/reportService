@@ -26,7 +26,6 @@ const initModels = (sequelize) => {
     reportcommon,
     dailyreports,
     weeklyreports,
-    fileinfo,
   };
 }
 export default initModels;

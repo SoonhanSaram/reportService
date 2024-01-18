@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { useCommonContext } from "../../provider/common";
 import { jwtDecode } from "jwt-decode";
+import { setUser } from "../../js/common";
 export const Login = () => {
 
     const { setUserInfo, setToken, getRefreshToken, getToken } = useCommonContext();
@@ -30,23 +31,6 @@ export const Login = () => {
         })
     }
 
-    // jwt 토큰 decoding 을 위한 함수
-    const decodingToken = async (token) => {
-        // 한글 깨짐 발견 아래 jwtDecode lib 으로 처리
-        // const payload = token.substring(token.indexOf('.') + 1, token.lastIndexOf('.'));
-        // const decodedPayload = base64.decode(payload);
-        // const decodingData = JSON.parse(decodedPayload);
-
-        const decodingData = jwtDecode(token);
-        console.log(decodingData);
-        await setUserInfo({
-            userName: decodingData['name'],
-            userAuthority: decodingData['autho'],
-            userBelongto: decodingData['cName'],
-        })
-
-    }
-
     // 로그인을 위한 fetch 함수
     const fetchUserLogin = async () => {
 
@@ -73,8 +57,7 @@ export const Login = () => {
 
         if (response.status === 200) {
             alert("로그인 성공");
-            setToken(token);
-            decodingToken(token);
+            setUser(token, setUserInfo);
             navigate('/dashBoard');
         } else {
             alert("로그인 실패")

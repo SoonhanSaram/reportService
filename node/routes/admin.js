@@ -5,7 +5,10 @@ import { encryptModule } from '../module/crypto.js';
 import upload from '../middleware/multer.js';
 import fs from 'fs';
 
-const { corporationinfo, userInfo, fileInfo } = db.models;
+const userInfo = db.models.userinfo;
+const corporationinfo = db.models.corporationinfo;
+const fileInfo = db.models.fileinfo
+
 const router = express.Router();
 
 // 회원 관리
@@ -33,6 +36,7 @@ router.get('/memberList/:offset/:limit', async (req, res, next) => {
 
         // const memberList = await userInfo.findAll({ offset: offset, limit: limit });
         const countMember = await userInfo.count();
+        console.log(countMember);
 
         /**
          * 커버링 인덱스를 활용한 쿼리 능률 향상
@@ -176,7 +180,7 @@ router.get('/getFormList', async (req, res, next) => {
     try {
         const result = await fileInfo.findAll(); // 추후 file 소유주를 통해서 admin 값만 가져오도록 설정
         if (typeof result === 'undefined' || result === null || result === "" || result.length === 0 || typeof result === 'object' && !Object.keys(result).length) {
-            res.status(200).send({ message: "보고서 파일 리스트 없음" });
+            return res.status(200).send({ message: "보고서 파일 리스트 없음" });
         }
         res.status(200).send({ message: "보고서 파일 get 성공", data: result });
     } catch (error) {

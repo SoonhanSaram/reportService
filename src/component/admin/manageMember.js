@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useCommonContext } from "../../provider/common"
 import { Paging } from "../common/pagination"
 import { PasswordModal } from "./passwordModal";
-import { refreshUser } from "../../js/common";
+import { logout, refreshUser, setUser } from "../../js/common";
 
 export const ManageMember = () => {
-    const { getToken, memberListInfo, setMemberListInfo, setPaging, paging, isOpenModal, openModal, cookie, setUserInfo } = useCommonContext();
+    const { getToken, memberListInfo, setMemberListInfo, setPaging, paging, isOpenModal, openModal, cookie, setUserInfo, userInfo } = useCommonContext();
 
     const [name, setName] = useState();
     const { offset, limit } = paging;
@@ -59,7 +59,7 @@ export const ManageMember = () => {
             )
         } else if (!result.ok) {
             console.log('체크 2');
-            refreshUser(result.ok, cookie, setUserInfo)
+            refreshUser(result.ok, userInfo, setUserInfo, cookie)
         }
     }
 
@@ -98,51 +98,66 @@ export const ManageMember = () => {
 
     // 회원 리시트를 받아 오는 method
     const getList = async () => {
-        const accessToken = localStorage.getItem('accessToken');
+        let result = null;
+        let response = null;
 
-        //  회원 리스트 초기화 
+        //  회원 리스트 초기화
         setMemberListInfo({
             ...memberList,
             memberList: null,
         })
 
-        // fetch 옵션 설정
-        const fetchOption = {
-            method: "GET",
-            headers: {
-                'authorization': `Bearer ${accessToken}`
+        const doFetch = async () => {
+            // fetch 옵션 설정
+            const fetchOption = {
+                method: "GET",
+                headers: {
+                    'authorization': `Bearer ${getToken()}`
+                }
+            };
+            // fetch 실행
+            response = await fetch(`/admin/memberList/${offset}/${limit}`, fetchOption);
+
+            // json data 로 변환
+            result = await response.json();
+
+            if (response.status === 200) {
+                // result 결과가 있을 경우 회원 리스트 할당
+                setMemberListInfo({
+                    ...memberListInfo,
+                    memberList: result.memberList,
+                    memberLength: result.countMember
+                })
+                // pagination 에 쓸 전체 회원 수 저장
+                setPaging(
+                    {
+                        ...paging,
+                        totalItems: result.countMember
+                    }
+                )
+            } else {
             }
         };
 
-        // fetch 실행
-        const response = await fetch(`/admin/memberList/${offset}/${limit}`, fetchOption);
+        await doFetch();
 
-        // json data 로 변환
-        const result = await response.json();
-        console.log(result);
-
-        if (result.ok && result != null) {
-            // result 결과가 있을 경우 회원 리스트 할당
-            setMemberListInfo({
-                ...memberListInfo,
-                memberList: result.memberList,
-                memberLength: result.countMember
-            })
-            // pagination 에 쓸 전체 회원 수 저장
-            setPaging(
-                {
-                    ...paging,
-                    totalItems: result.countMember
-                }
-            )
-        } else if (!result.ok) {
-            console.log('체크 2');
-            refreshUser(result.ok, setUserInfo, cookie)
+        if (response.status == 404 && !result.ok) {
+            alert('검색실패');
+            return false;
+        } if (response.status == 401 && !result.ok) {
+            try {
+                refreshUser(userInfo, setUserInfo, cookie)
+                await doFetch();
+            } catch (error) {
+                logout(setUserInfo, userInfo);
+            }
         }
     };
 
     // api 에서 넘겨 받은 data 를 tbody 에 표현
     const viewMemberList = () => {
+        console.log(memberList);
+
         if (memberList != null) {
             return memberList.map((item, index) => (
                 <tr key={index}>
@@ -158,7 +173,7 @@ export const ManageMember = () => {
         } else {
             return (
                 <tr>
-                    <td colSpan="5">검색된 정보가 없습니다.</td>
+                    <td colSpan="7">검색된 정보가 없습니다.</td>
                 </tr>
             );
         }

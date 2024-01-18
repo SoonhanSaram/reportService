@@ -7,23 +7,21 @@ export const refresh = async (req, res) => {
     if (req.headers.authorization && req.headers.refresh) {
         const authToken = req.headers.authorization.split('Bearer ')[1];
         const refreshToken = req.headers.refresh;
-
         //  access token 검증 
         const authResult = verifyToken(authToken);
-
         // 토큰에서 user 정보 추출
         const decoded = jwt.decode(authToken);
-
-        // user 정보가 없으면 권한 없음
-        if (decoded == null) {
-            res.status(401).send({
+        // console.log("체크1" + decoded.name);
+        if (!decoded) {
+            // user 정보가 없으면 권한 없음
+            return res.status(401).send({
                 ok: false,
                 message: 'No authorized'
             });
         }
 
         // user 정보를 가져와 refreshtoken 을 검증
-        const refreshResult = verifyRefreshToken(refreshToken, decoded.name)
+        const refreshResult = await verifyRefreshToken(refreshToken, decoded);
 
         // accesstoken 이 만료되어 있고 authresult.ok 가 false 일 때,
         if (authResult.ok === false && authResult.message === 'jwt expired') {
@@ -34,8 +32,10 @@ export const refresh = async (req, res) => {
                     message: 'No authorized'
                 })
             } else {
-                const newAccessToken = issueAccessToken();
+                const { name, autho, cName } = decoded;
+                // console.log(name, autho, cName);
 
+                const newAccessToken = issueAccessToken(name, autho, cName);
                 res.status(200).send({
                     ok: true,
                     data: {

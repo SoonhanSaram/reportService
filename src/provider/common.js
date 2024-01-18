@@ -1,10 +1,9 @@
 /**
  * Provider 를 전역 state 관리
 */
-import { jwtDecode } from "jwt-decode";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Cookies } from 'react-cookie'
-import { setUser } from "../js/common";
+import { getRefreshToken, getToken, setUser } from "../js/common";
 
 // 컴포넌트에서 공통적으로 사용 할 store 개시
 const CommonContext = createContext();
@@ -21,6 +20,9 @@ const CommonContextPovider = ({ children }) => {
     const [clickedCorp, setClickedCorp] = useState();
 
     const cookie = new Cookies();
+
+    // refreshToken 을 cookie 에서 가져오는 함수
+    const getRefreshToken = () => cookie.get('refreshToken')
 
     // memberList 받을 state
     const [memberListInfo, setMemberListInfo] = useState({
@@ -46,15 +48,6 @@ const CommonContextPovider = ({ children }) => {
     );
 
     const [dailyReportList, setDailyReportList] = useState();
-
-    // responsebody 에서 받은 토큰을 localstorage 에 저장하는 함수
-    const setToken = (token) => localStorage.setItem('accessToken', token)
-
-    // accessToken 을 localstorage 에서 가져오는 함수
-    const getToken = () => localStorage.getItem('accessToken')
-
-    // refreshToken 을 cookie 에서 가져오는 함수
-    const getRefreshToken = () => cookie.get('refreshToken')
 
     const currentTime = new Date();
     // 요일을 한글로 반환 (함수)
@@ -90,7 +83,6 @@ const CommonContextPovider = ({ children }) => {
     }
 
     const newDate = (newDate) => {
-
         function getKoreanDayOfWeek(dayIndex) {
             const days = ['일', '월', '화', '수', '목', '금', '토'];
             return days[dayIndex];
@@ -127,60 +119,14 @@ const CommonContextPovider = ({ children }) => {
 
     }, [])
 
+    console.log(userInfo);
+
+
     function openModal() {
         setIsOpenModal(!isOpenModal)
     }
 
-    const logOut = async () => {
-        /**
-        const fetchOption = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                uName: userName
-            })
-        }
 
-        const response = await fetch(process.env.REACT_APP_USER_LOGOUT, fetchOption);
-
-        if (response.status === 200) {
-            alert('서버 로그아웃 성공')
-            // userInfo 와 localStorage의 accessToken 삭제
-            setUserInfo({
-                ...userInfo,
-                userName: null,
-                userAuthority: null,
-                userBelongto: null
-            })
-            localStorage.clear();
-
-            window.location.href = '/';
-        } else {
-            alert('서버 로그아웃 실패');
-            // userInfo 와 localStorage의 accessToken 삭제
-            setUserInfo({
-                ...userInfo,
-                userName: null,
-                userAuthority: null,
-                userBelongto: null
-            })
-            localStorage.clear();
-
-            window.location.href = '/';
-        }
-         */
-        setUserInfo({
-            ...userInfo,
-            userName: null,
-            userAuthority: null,
-            userBelongto: null
-        })
-        localStorage.clear();
-
-        window.location.href = '/';
-    }
 
     // validate file 함수
     const validateAndFetch = async (fileTitle, file) => {
@@ -224,7 +170,7 @@ const CommonContextPovider = ({ children }) => {
         }
     }
 
-    const props = { openModal, isOpenModal, clickedCorp, setClickedCorp, setUserInfo, userInfo, setToken, getToken, memberListInfo, setMemberListInfo, paging, setPaging, logOut, validateAndFetch, getRefreshToken, dailyReportList, setDailyReportList, date, handleInputValues, inputValues, cookie }
+    const props = { openModal, isOpenModal, clickedCorp, setClickedCorp, setUserInfo, userInfo, getToken, memberListInfo, setMemberListInfo, paging, setPaging, validateAndFetch, getRefreshToken, dailyReportList, setDailyReportList, date, handleInputValues, inputValues, cookie }
     return <CommonContext.Provider value={props}>{children}</CommonContext.Provider>;
 }
 
