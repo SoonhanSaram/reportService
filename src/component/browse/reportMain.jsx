@@ -6,9 +6,9 @@ import { DailyReport } from "./dailyReport.jsx";
 
 
 export const ReportMain = () => {
-    const { getToken, dailyReportList, setDailyReportList, setPaging, paging } = useCommonContext();
+    const { getToken, dailyReportList, setDailyReportList, setPaging, paging, report, setReport, userInfo } = useCommonContext();
 
-    const [index, setIndex] = useState(0);
+    const [detail, setDetail] = useState(false);
     const [isOpenModal, setIsOpenModal] = useState(false);
 
     const getList = async (offset, limit) => {
@@ -39,8 +39,11 @@ export const ReportMain = () => {
         }
     };
 
-    const handleIndex = (e, setIndex, isOpenModal, setIsOpenModal) => {
-        setIndex(e);
+    const handleIndex = (e, setDetail, isOpenModal, setIsOpenModal) => {
+        // console.log(dailyReportList, e);
+        setReport(dailyReportList[e]);
+        setDetail(!detail);
+        console.log(report);
         setIsOpenModal(!isOpenModal);
     }
 
@@ -50,7 +53,7 @@ export const ReportMain = () => {
             return dailyReportList.map((item, index) => (
                 <tr key={item.report_seq}>
                     <td>{index + 1}</td>
-                    <td style={{ cursor: 'pointer' }} onClick={() => handleIndex(item.report_seq, setIndex, isOpenModal, setIsOpenModal)}>{formatReportType(item.report_type)}</td>
+                    <td style={{ cursor: 'pointer' }} onClick={() => handleIndex(index, setDetail, isOpenModal, setIsOpenModal)}>{formatReportType(item.report_type)}</td>
                     <td>{formatDate(item.created_at)}</td>
                     <td>{formatDate(item.work_date)}</td>
                     <td>{formatStatus(item.approval_status)}</td>
@@ -85,9 +88,9 @@ export const ReportMain = () => {
             {isOpenModal ?
                 <div className="modal_box">
                     <div id='reportWrapper'>
-                        <DailyReport index={index - 1} />
+                        <DailyReport detail={true} />
                     </div>
-                    <button className='btn' onClick={() => setIsOpenModal(!isOpenModal)}>확인</button>
+                    <button className='btn close' onClick={() => setIsOpenModal(!isOpenModal)}>확인</button>{userInfo.userAuthority === 1 ? <><button className="btn">승인</button> <button className="btn">반려</button></> : null}
                 </div> : null}
         </div>
     )

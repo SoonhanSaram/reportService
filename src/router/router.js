@@ -12,7 +12,6 @@ import { ManageCorp } from "../component/admin/manageCorp";
 import { UploadReport } from "../component/browse/uploadReport";
 import { ReportMain } from "../component/browse/reportMain";
 
-
 export const Router = createBrowserRouter([
     {
         path: "/",
@@ -27,9 +26,12 @@ export const Router = createBrowserRouter([
             {
                 path: "/userRegist", element: <UserRegist />
             },
-            {
-                path: "/dashboard", element: <DashBoard />
-            },
+        ]
+    },
+    {
+        path: '/admin',
+        element: <App role='admin' />,
+        children: [
             {
                 path: '/admin/member', element: <ManageMember />
             },
@@ -40,13 +42,26 @@ export const Router = createBrowserRouter([
                 path: '/admin/corporation', element: <ManageCorp />
             },
             {
-                path: '/uploadReport', element: <UploadReport />
+                path: "/admin/dashboard", element: <DashBoard />
             },
-            {
-                path: '/report', element: <ReportMain />
-            }
         ]
     },
+    {
+        path: '/service',
+        element: <App role='mate' />,
+        children:
+            [
+                {
+                    path: '/service/uploadReport', element: <UploadReport />
+                },
+                {
+                    path: '/service/report', element: <ReportMain />
+                },
+                {
+                    path: "/service/dashboard", element: <DashBoard />
+                },
+            ]
+    }
 ]);
 
 

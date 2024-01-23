@@ -116,7 +116,7 @@ router.post('/user', async (req, res, next) => {
 
     // 요청받은 비밀번호를 암호화 
     const hashedPassword = encryptModule(uPassword);
-    console.log(hashedPassword);
+    console.log(hashedPassword, '체크', uCorporation);
 
     try {
         const response = await userInfo.create({ user_name: uName, user_password: hashedPassword, corp_belongto: uCorporation });

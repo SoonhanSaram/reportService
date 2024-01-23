@@ -13,11 +13,12 @@ export const UserRegist = () => {
 
     // 재직회사 input 초기화
     useEffect(() => {
-        setClickedCorp('')
+
     })
 
     // 뒤로가기 함수
     function historyBack() {
+        setClickedCorp('');
         navigate(-1);
     }
 
@@ -83,7 +84,10 @@ export const UserRegist = () => {
     }
 
     // 유저 회원가입을 위한 fetch 함수
-    const fetchUserRegist = async () => {
+    const fetchUserRegist = async (clickedCorp) => {
+
+        console.log(clickedCorp);
+
         const fetchOption = {
             method: "POST",
             headers: {
@@ -92,7 +96,7 @@ export const UserRegist = () => {
             body: JSON.stringify({
                 uName: userName,
                 uPassword: userPassword,
-                uCorporation: clickedCorp
+                uCorporation: clickedCorp.corp_number
             })
         }
         if (isCertified === false && isCheckedPassword === true) {
@@ -124,9 +128,9 @@ export const UserRegist = () => {
                 <input type="password" name='userPasswordCheck' value={userPasswordCheck} onChange={onChangeInput} onKeyUp={checkPassword} maxLength={20} />
                 {isCheckedPassword === true ? <p className='accept'>비밀번호가 일치합니다</p> : <p className='warning'>비밀번호가 일치하지않습니다.</p>}
                 <label>재직회사 :</label>
-                <span><input disabled={true} name='userCorporation' value={clickedCorp} /><button onClick={openModal}>회사 찾기</button></span>
+                <span><input disabled={true} name='userCorporation' value={clickedCorp !== undefined ? clickedCorp.corp_name : null} /><button onClick={openModal}>회사 찾기</button></span>
             </div>
-            <button className="btn" onClick={fetchUserRegist}>가입</button>
+            <button className="btn" onClick={() => fetchUserRegist(clickedCorp)}>가입</button>
             <button className="btn" onClick={historyBack}>뒤로가기</button>
             {isOpenModal ? <Modal /> : null}
         </div>

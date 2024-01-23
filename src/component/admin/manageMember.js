@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useCommonContext } from "../../provider/common"
 import { Paging } from "../common/pagination"
 import { PasswordModal } from "./passwordModal";
-import { logout, refreshUser, setUser } from "../../js/common";
+import { refreshUser, setUser } from "../../js/common";
+import { logout } from "../../js/apis/api/login";
 
 export const ManageMember = () => {
     const { getToken, memberListInfo, setMemberListInfo, setPaging, paging, isOpenModal, openModal, cookie, setUserInfo, userInfo } = useCommonContext();

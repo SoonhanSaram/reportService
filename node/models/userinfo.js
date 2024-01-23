@@ -17,6 +17,10 @@ export default (sequelize) => {
     user_authority: {
       type: Sequelize.DataTypes.INTEGER,
       defaultValue: 5,
+      references: {
+        model: 'roleinfo',
+        key: 'role_num'
+      }
     },
     // user_belongto: {
     //   type: Sequelize.DataTypes.STRING(256),

@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import { logout } from "./apis/api/login";
 
 
 // responsebody 에서 받은 토큰을 localstorage 에 저장하는 함수
@@ -7,9 +8,16 @@ export const setToken = (token) => localStorage.setItem('accessToken', token)
 // accessToken 을 localstorage 에서 가져오는 함수
 export const getToken = () => localStorage.getItem('accessToken')
 
+// enter 키 로그인
+export const pressEnter = (e, method) => {
+    const key = e.code
+    if (key === "Enter") {
+        method();
+    }
+}
+
 // userInfo setting 을 위한 함수
 export const setUser = async (token, setUserInfo) => {
-
     // 한글 깨짐 발견 아래 jwtDecode lib 으로 처리
     // const payload = token.substring(token.indexOf('.') + 1, token.lastIndexOf('.'));
     // const decodedPayload = base64.decode(payload);
@@ -23,6 +31,7 @@ export const setUser = async (token, setUserInfo) => {
             userName: decodingData['name'],
             userAuthority: decodingData['autho'],
             userBelongto: decodingData['cName'],
+            isLogin: true,
         }));
 
     } else {
@@ -32,7 +41,6 @@ export const setUser = async (token, setUserInfo) => {
 }
 
 export const refreshUser = async (userInfo, setUserInfo, cookie) => {
-
     if (userInfo) {
         const token = localStorage.getItem('accessToken');
         const refreshToken = cookie.get('refreshToken');
@@ -57,72 +65,56 @@ export const refreshUser = async (userInfo, setUserInfo, cookie) => {
             console.log('실행 리프레시');
         }
     } else {
-        logout(setUserInfo);
+        logout(setUserInfo, userInfo);
     }
 }
 
-export const handleNavi = (navigate, intersection) => {
+export const handleNavi = (navigate, intersection, role) => {
+    console.log(intersection, role);
+
     // switch case 문을 이용한 navigate 이벤트
-    switch (intersection) {
-        case 'member':
-            navigate('/admin/member')
-            break;
-        case 'user':
-            navigate('userRegist')
-            break;
-        case 'dashboard':
-            navigate('dashboard')
-            break;
-        case 'form':
-            navigate('/admin/form')
-            break;
-        case 'corp':
-            navigate('/admin/corporation')
-            break;
-        default:
-            navigate('/')
-            break
+    if (role === 'admin') {
+        switch (intersection) {
+            case 'member':
+                navigate('/admin/member')
+                break;
+            case 'form':
+                navigate('/admin/form')
+                break;
+            case 'corp':
+                navigate('/admin/corporation')
+                break;
+            default:
+                navigate('/admin/dashboard')
+                break;
+        };
+    } else if (role === 'mate') {
+        switch (intersection) {
+            case 'report':
+                navigate('/service/report');
+                break;
+            case 'uploadReport':
+                navigate('/service/uploadReport');
+                break;
+            default:
+                navigate('/service/dashboard');
+                break;
+        }
+    } else if (role === undefined) {
+        console.log('체크1', intersection);
+        switch (intersection) {
+            case 'cor':
+                navigate('/corRegist')
+                break;
+            case 'user':
+                navigate('/userRegist')
+                break;
+            default:
+                navigate('/')
+                break
+        }
     }
 }
 
-export const logout = async (setUserInfo, userInfo) => {
 
-    console.log(userInfo);
-
-    const fetchOption = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            uName: userInfo.userName
-        })
-    }
-
-    const response = await fetch(process.env.REACT_APP_USER_LOGOUT, fetchOption);
-
-    if (response.status === 200) {
-        alert('서버 로그아웃 성공')
-        // userInfo 와 localStorage의 accessToken 삭제
-        setUserInfo((prev) => ({
-            ...prev,
-            userName: null,
-            userAuthority: null,
-            userBelongto: null
-        }));
-    } else {
-        alert('서버 로그아웃 실패');
-    }
-    // userInfo 와 localStorage의 accessToken 삭제
-    setUserInfo((prev) => ({
-        ...prev,
-        userName: null,
-        userAuthority: null,
-        userBelongto: null
-    }));
-
-    localStorage.clear();
-
-    window.location.href = '/';
-}
 

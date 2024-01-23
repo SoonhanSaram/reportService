@@ -3,7 +3,7 @@
 */
 import { createContext, useContext, useEffect, useState } from "react";
 import { Cookies } from 'react-cookie'
-import { getRefreshToken, getToken, setUser } from "../js/common";
+import { getToken, setUser } from "../js/common";
 
 // 컴포넌트에서 공통적으로 사용 할 store 개시
 const CommonContext = createContext();
@@ -34,7 +34,8 @@ const CommonContextPovider = ({ children }) => {
     const [userInfo, setUserInfo] = useState({
         userName: '',
         userAuthority: '',
-        userBelongto: ''
+        userBelongto: '',
+        isLogin: false
     });
 
     // pagination 을 위한 state
@@ -48,6 +49,8 @@ const CommonContextPovider = ({ children }) => {
     );
 
     const [dailyReportList, setDailyReportList] = useState();
+
+    const [report, setReport] = useState();
 
     const currentTime = new Date();
     // 요일을 한글로 반환 (함수)
@@ -126,8 +129,6 @@ const CommonContextPovider = ({ children }) => {
         setIsOpenModal(!isOpenModal)
     }
 
-
-
     // validate file 함수
     const validateAndFetch = async (fileTitle, file) => {
 
@@ -170,7 +171,7 @@ const CommonContextPovider = ({ children }) => {
         }
     }
 
-    const props = { openModal, isOpenModal, clickedCorp, setClickedCorp, setUserInfo, userInfo, getToken, memberListInfo, setMemberListInfo, paging, setPaging, validateAndFetch, getRefreshToken, dailyReportList, setDailyReportList, date, handleInputValues, inputValues, cookie }
+    const props = { openModal, isOpenModal, clickedCorp, setClickedCorp, setUserInfo, userInfo, getToken, memberListInfo, setMemberListInfo, paging, setPaging, validateAndFetch, getRefreshToken, dailyReportList, setDailyReportList, date, handleInputValues, inputValues, cookie, report, setReport }
     return <CommonContext.Provider value={props}>{children}</CommonContext.Provider>;
 }
 

@@ -6,6 +6,7 @@ import { redisClient } from '../module/redis.js'
 // import db
 import db from "../models/index.js"
 import { encryptModule } from '../module/crypto.js';
+import { QueryTypes } from 'sequelize';
 
 const corpInfo = db.models.corporationinfo;
 const userInfo = db.models.userinfo;
@@ -17,9 +18,14 @@ router.post('/', async (req, res, next) => {
     const { uName, uPassword } = req.body
     const hashedPassword = encryptModule(uPassword);
     try {
-        const response = await userInfo.findOne({ attributes: ['user_name', 'user_authority', 'corp_belongto'] }, { where: { user_name: uName, user_password: hashedPassword } });
-        const corporation = await corpInfo.findOne({ where: { corp_number: response.corp_belongto } })
+        const query = `SELECT a.user_name, b.role_name AS user_authority, a.corp_belongto FROM(SELECT user_name, corp_belongto, user_authority from userinfo WHERE user_name = '${uName}' AND user_password = '${hashedPassword}') a JOIN roleinfo b ON a.user_authority = b.role_num`;
+        // const response = await userInfo.findOne({ attributes: ['user_name', 'user_authority', 'corp_belongto'] }, { where: { user_name: uName, user_password: hashedPassword } });
+        const userResponse = await userInfo.sequelize.query(query, { type: QueryTypes.SELECT });
+        // , benchmark: true, logging: (...msg) => console.log(msg), showWarnings: true
 
+        const response = userResponse[0];
+
+        const corporation = await corpInfo.findOne({ where: { corp_number: response.corp_belongto } })
         // console.log('체크1');
         const accessToken = issueAccessToken(response.user_name, response.user_authority, corporation.corp_name);
 

@@ -15,8 +15,6 @@ export const UploadReport = () => {
 
     const { toworkDay, toworkMonth, toworkYear } = inputValues;
 
-    const [currentTime, setCurrentTime] = useState(new Date());
-
     const [checked, setChecked] = useState(false);
 
     const [reportType, setReportType] = useState('1');

@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
 import { useCommonContext } from "../../provider/common";
 
-export const DailyReport = ({ index }) => {
+export const DailyReport = ({ detail }) => {
 
-    const { userInfo, date, dailyReportList, handleInputValues, inputValues } = useCommonContext();
+    const { date, handleInputValues, report } = useCommonContext();
 
     const { year, month, day, dayOfWeek, lastDay } = date;
 
-    const [report, setReport] = useState(dailyReportList[index])
-
-    useEffect(() => {
-        setReport(dailyReportList[index]);
-    }, [index])
-
     const viewReport = (values, readOnly) => {
+        console.log(values);
         const workdate = new Date(values.work_date);
         const workYear = workdate.getFullYear();
         const workMonth = workdate.getMonth() + 1;
@@ -113,7 +107,7 @@ export const DailyReport = ({ index }) => {
 
     return (
         <>
-            {index ? viewReport(report, false) : viewReport(report, false)}
+            {detail ? viewReport(report, false) : viewReport(report, false)}
         </>
 
     )

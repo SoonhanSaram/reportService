@@ -3,14 +3,13 @@ import { useCommonContext } from '../../provider/common';
 
 // 모달 컴포넌트
 const Modal = (props) => {
-    const { openModal, setClickedCorp, validateAndFetch } = useCommonContext();
+    const { openModal, setClickedCorp, validateAndFetch, clickedCorp } = useCommonContext();
     const [inputValue, setInputValue] = useState('')
     const [corporationList, setCorporationList] = useState([]);
 
     const [type, setType] = useState(props.type);
 
     useEffect(() => {
-        console.log(inputValue);
     }, [inputValue])
 
     // inputValue 핸들러
@@ -44,9 +43,8 @@ const Modal = (props) => {
 
     // 클릭한 회사 리스트를 저장하는 함수 
     const ClickCorporation = (item) => {
-        const value = item.corp_number
-        setClickedCorp(value);
-        setCorporationList([]);
+        setClickedCorp(item);
+        console.log(clickedCorp);
         openModal()
     }
 
