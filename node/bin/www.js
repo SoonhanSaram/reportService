@@ -4,6 +4,7 @@
 import http from 'http';
 import app from './app.js';
 import createDebug from 'debug';
+import { Server } from 'socket.io';
 
 // port number check
 const normalizePort = (val) => {
@@ -31,6 +32,12 @@ const port = normalizePort(process.env.PORT || "3010");
  */
 const server = http.createServer(app);
 
+export const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    mathods: ["GET", "POST"],
+  },
+});
 
 server.listen(port);
 

@@ -2,6 +2,8 @@ import express from 'express'
 import db from "../models/index.js"
 import { Op, QueryTypes } from 'sequelize';
 
+const corporationinfo = db.models.corporationinfo
+const userinfo = db.models.userinfo;
 const reportCommon = db.models.reportcommon;
 const daily = db.models.dailyreports;
 const weekly = db.models.weeklyreports;
@@ -19,6 +21,8 @@ router.get('/getReports', async (req, res) => {
     offset = parseInt(offset);
     limit = parseInt(limit);
     const author = req.name;
+    const role = req.role
+    const corporation = req.corp
 
     try {
         /**
@@ -52,17 +56,23 @@ router.get('/getReports', async (req, res) => {
 
         // const query = `SELECT a.*, b.work_date, b.work_plan, b.suggestions, b.unique_points from (SELECT * from reportscommon where author like ${author}) a  join dailyreports b on a.report_seq = b.report_seq` // 9ms
 
-        const count = await reportCommon.count({ where: { author: author } });
+        if (role === 'mate') {
+            const count = await reportCommon.count({ where: { author: author } });
+            const query = `SELECT a.*, b.work_date, b.work_plan, b.suggestions, b.unique_points from (SELECT * from reportscommon where author = '${author}' limit ${offset}, ${limit}) a  join dailyreports b on a.report_seq = b.report_seq` // 2ms
+            const reports = await reportCommon.sequelize.query(query, { type: QueryTypes.SELECT, benchmark: true });
+            // console.log(reports);
+            return res.status(200).send({ message: '보고서 리스트 가져오기 성공', list: reports, count: count });
+        } else if (role === 'leader' || role === 'owner') {
+            console.log('진입 2');
 
-        // console.log(count);
+            // sql 에러 발생하는 곳
+            // raw query
+            const query = `SELECT a.report_seq, a.objectives, a.approval_status, a.author FROM (SELECT b.user_name from userinfo as b JOIN corporationinfo as c ON b.corp_belongto = c.corp_number WHERE c.corp_name = '${corporation}' limit 0, 5) as b JOIN reportscommon as a on a.author = b.user_name`;
+            const reports = await reportCommon.sequelize.query(query, { type: QueryTypes.SELECT, benchmark: true, logging: (...msg) => console.log(msg) });
+            return res.status(200).send({ message: '보고서 리스트 가져오기 성공', list: reports, count: count });
+        }
 
-        const query = `SELECT a.*, b.work_date, b.work_plan, b.suggestions, b.unique_points from (SELECT * from reportscommon where author = '${author}' limit ${offset}, ${limit}) a  join dailyreports b on a.report_seq = b.report_seq` // 2ms
 
-        const reports = await reportCommon.sequelize.query(query, { type: QueryTypes.SELECT, benchmark: true });
-        console.log(reports);
-
-
-        res.status(200).send({ message: '보고서 리스트 가져오기 성공', list: reports, count: count });
     } catch (error) {
         res.status(401).send({ message: '보고서 리스트 가져오기 실패' });
     }
@@ -124,6 +134,13 @@ router.post('/uploadReport', async (req, res) => {
             res.status(401).send({ message: '주간업무보고서 작성 실패' });
         }
     }
+})
+
+router.post('/connectChat', async (req, res) => {
+
+
+
+
 })
 
 export default router;

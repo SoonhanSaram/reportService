@@ -27,6 +27,8 @@ const verifyToken = (token) => {
             corp: decoded.cName,
         };
     } catch (error) {
+        console.log(error);
+
         return {
             ok: false,
             message: error.message,

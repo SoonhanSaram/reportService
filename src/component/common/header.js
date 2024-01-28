@@ -16,21 +16,24 @@ export const Header = () => {
                     <li><button className="btn" onClick={() => handleNavi(navigate, 'member', userAuthority)}>회원 관리</button></li>
                     <li><button className="btn" onClick={() => handleNavi(navigate, 'form', userAuthority)}>보고서폼 관리</button></li>
                     <li><button className="btn" onClick={() => handleNavi(navigate, 'corp', userAuthority)}>회원기업 관리</button></li>
-                    {/* <li><button href="#">menu3</button></li> */}
-                    {/* <li><button href="#">menu4</button></li> */}
                     {userInfo.userName != null ? <li><button onClick={() => logout(setUserInfo, userInfo)} className="btn">로그아웃</button></li> : null}
-                </ul> : userAuthority === 'mate' && userInfo.isLogin ? <ul>
+                </ul> : userAuthority === 'mate' || userAuthority === 'leader' && userInfo.isLogin ? <ul>
                     <li><button className="btn" onClick={() => handleNavi(navigate, '', userAuthority)}>Home</button></li>
                     <li><button className="btn" onClick={() => handleNavi(navigate, 'report', userAuthority)}>보고서 관리</button></li>
                     <li><button className="btn" onClick={() => handleNavi(navigate, 'project', userAuthority)}>프로젝트 관리</button></li>
                     {userInfo.userName != null ? <li><button onClick={() => logout(setUserInfo, userInfo)} className="btn">로그아웃</button></li> : null}
-                    {/* <li><button href="#">menu3</button></li> */}
-                    {/* <li><button href="#">menu4</button></li> */}
-                </ul> : <ul>
-                    <li><button className="btn" onClick={() => handleNavi(navigate, '', userAuthority)}>Home</button></li>
-                    <li><button className="btn" onClick={() => handleNavi(navigate, 'report', userAuthority)}>보고서 관리</button></li>
-                    <li><button className="btn" onClick={() => handleNavi(navigate, 'project', userAuthority)}>프로젝트 관리</button></li>
-                </ul>}
+                </ul> : userAuthority === 'owner' && userInfo.isLogin ?
+                    <ul>
+                        <li><button className="btn" onClick={() => handleNavi(navigate, '', userAuthority)}>Home</button></li>
+                        <li><button className="btn" onClick={() => handleNavi(navigate, 'report', userAuthority)}>보고서 관리</button></li>
+                        <li><button className="btn" onClick={() => handleNavi(navigate, 'project', userAuthority)}>프로젝트 관리</button></li>
+                        {userInfo.userName != null ? <li><button onClick={() => logout(setUserInfo, userInfo)} className="btn">로그아웃</button></li> : null}
+
+                    </ul> : <ul>
+                        <li><button className="btn" onClick={() => handleNavi(navigate, '', userAuthority)}>Home</button></li>
+                        <li><button className="btn" onClick={() => handleNavi(navigate, 'report', userAuthority)}>보고서 관리</button></li>
+                        <li><button className="btn" onClick={() => handleNavi(navigate, 'project', userAuthority)}>프로젝트 관리</button></li>
+                    </ul>}
         </nav>
     )
 }

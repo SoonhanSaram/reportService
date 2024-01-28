@@ -334,6 +334,9 @@ ul.pagination > li:hover:not(.active) {background-color: #ddd;}
     height: 40px;
     width: 100%;
   }
+  .flex-item-left, .flex-item-right{
+  flex:100%;
+  }
 }
 
 /* 업무 보고서 css */
@@ -347,42 +350,42 @@ ul.pagination > li:hover:not(.active) {background-color: #ddd;}
   width: 100%;
 }
 
-#reportWrapper table td {
+table td {
   border: 1px solid rgba(0, 0, 0, .2);
 }
 
-#reportWrapper table td.long_content {
-  height: 160px;
-}
-
-#reportWrapper table td.none {
-  border : none;
-}
-
-#reportWrapper table tr.long_content {
+table tr.long_content {
   min-height: 160px;
 }
 
-#reportWrapper table td div {
+table td.long_content {
+  height: 160px;
+}
+
+table td.none {
+  border : none;
+}
+
+table td div {
   width: 100%;
   height: 100%;
   position: relative;
 }
 
-#reportWrapper table td div > p {
+table td div > p {
   position: absolute;
   bottom: 2%;
   right : 3%;
 }
 
-#reportWrapper table td div input {
+table td div input {
   height: 100%;
   width: 100%;  
   border: none;
   margin: 0;
 }
 
-#reportWrapper table td div textarea {
+table td div textarea {
   height: 100%;
   width: 100%;
   border: none;
@@ -398,4 +401,22 @@ ul.pagination > li:hover:not(.active) {background-color: #ddd;}
 
 #reportWrapper .suffix_day::after {
   content: "요일";
+}
+
+.flex-container {
+  width: 100%;
+  display: flex;
+  flex-wrap : wrap;
+}
+
+.flex-item-left{
+  flex:50%;
+}
+
+.flex-item-right{
+  flex:50%;
+}
+
+.table-type2 {
+  width:100%;
 }

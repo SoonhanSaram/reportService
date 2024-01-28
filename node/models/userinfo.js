@@ -63,6 +63,13 @@ export default (sequelize) => {
           { name: "corp_belongto" },
         ]
       },
+      {
+        name: 'idx_user_name',
+        using: 'BTREE',
+        fields: [
+          { name: 'user_name' }
+        ]
+      }
     ]
   });
 };

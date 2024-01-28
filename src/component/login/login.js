@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useCommonContext } from "../../provider/common";
 import { handleNavi, pressEnter } from "../../js/common.js";
 import { userLogin } from "../../js/apis/api/login.js";
+import { Chat } from "../common/chat.js";
 export const Login = () => {
 
     const { setUserInfo, userInfo } = useCommonContext();
@@ -41,6 +42,7 @@ export const Login = () => {
                 <button className="btn" onClick={() => handleNavi(navigate, 'cor',)}>기업회원가입</button>
                 <button className="btn" onClick={() => handleNavi(navigate, 'user',)}>유저회원가입</button>
             </div>
+            <Chat />
         </div>
     )
 }

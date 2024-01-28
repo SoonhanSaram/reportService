@@ -1,25 +1,17 @@
 import { Sequelize } from "sequelize";
 
 export default (sequelize) => {
-    return sequelize.define('reportscommon', {
-        report_seq: {
+    return sequelize.define('projectinfo', {
+        pro_seq: {
             type: Sequelize.DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        objectives: {
+        pro_title: {
             type: Sequelize.DataTypes.STRING(255),
-        },
-        approval_status: {
-            type: Sequelize.DataTypes.STRING(1),
             allowNull: false,
         },
-        // report type 추가 (fron에서 보고서 종류를 인식)
-        report_type: {
-            type: Sequelize.DataTypes.STRING(1),
-            allowNull: false,
-        },
-        author: {
+        pro_manager: {
             type: Sequelize.DataTypes.STRING(255),
             allowNull: false,
             references: {
@@ -27,20 +19,26 @@ export default (sequelize) => {
                 key: 'user_name'
             }
         },
-        supervisor_sign: {
+        pro_objective: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: false,
+        },
+        pro_period: {
             type: Sequelize.DataTypes.STRING(255),
         },
-        finance_sign: {
-            type: Sequelize.DataTypes.STRING(255),
+        pro_approval: {
+            type: Sequelize.DataTypes.BOOLEAN,
+            defaultValue: 0,
         },
-        ceo_sign: {
-            type: Sequelize.DataTypes.STRING(255),
-        },
+        pro_status: {
+            type: Sequelize.DataTypes.INTEGER,
+            defaultValue: 0,
+        }
     }, {
         sequelize,
-        tableName: 'reportscommon',
+        tableName: 'projectinfo',
         timestamps: true,
         paranoid: true,
-        underscored: true
-    });
+        underscored: true,
+    })
 }

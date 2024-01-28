@@ -8,6 +8,7 @@ import db from "../models/index.js"
 import { encryptModule } from '../module/crypto.js';
 import { QueryTypes } from 'sequelize';
 
+
 const corpInfo = db.models.corporationinfo;
 const userInfo = db.models.userinfo;
 

@@ -21,6 +21,42 @@ export default (sequelize) => {
         day1_unique_points: {
             type: Sequelize.DataTypes.STRING(255),
         },
+        day2_plan: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day2_suggestions: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day2_unique_points: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day3_plan: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day3_suggestions: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day3_unique_points: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day4_plan: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day4_suggestions: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day4_unique_points: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day5_plan: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day5_suggestions: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
+        day5_unique_points: {
+            type: Sequelize.DataTypes.STRING(255),
+        },
         // Repeat for day2 to day7
     }, {
         sequelize,

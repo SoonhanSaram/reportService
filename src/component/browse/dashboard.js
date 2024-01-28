@@ -1,9 +1,15 @@
+import { useEffect } from "react";
 import { useCommonContext } from "../../provider/common"
 import { Chart } from "react-google-charts";
+import { getSimpleList } from "../../js/apis/api/report";
 
 export const DashBoard = () => {
     // provider 에서 state 가져오기
-    const { userInfo } = useCommonContext();
+    const { userInfo, setDailyReportList } = useCommonContext();
+
+    useEffect(() => {
+        getSimpleList(0, 5, 'daily', setDailyReportList);
+    }, [])
 
     const chart = () => {
         return (
@@ -19,7 +25,7 @@ export const DashBoard = () => {
 
     return (
         <div>
-            {userInfo.userAuthority == 1 ?
+            {userInfo.userAuthority == 'admin' || userInfo.userAuthority == 'manager' ?
                 <>
                     <p>관리자 대시보드 위치 입니다.</p>
                     <p>{userInfo.userBelongto}</p>
@@ -28,9 +34,10 @@ export const DashBoard = () => {
                     {chart()}
                 </> :
                 <>
-                    <p>일반 사용자 대시보드 위치 입니다.</p>
+                    <p>기업사용자 위치 입니다.</p>
                     <p>{userInfo.userBelongto}</p>
                     <p>{userInfo.userName}</p>
+                    {userInfo.userAuthority}
                 </>}
 
         </div>

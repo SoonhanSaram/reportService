@@ -96,6 +96,12 @@ export const handleNavi = (navigate, intersection, role) => {
             case 'uploadReport':
                 navigate('/service/uploadReport');
                 break;
+            case 'project':
+                navigate('/service/projectMain');
+                break;
+            case 'createProject':
+                navigate('/service/createProject');
+                break;
             default:
                 navigate('/service/dashboard');
                 break;
@@ -113,8 +119,64 @@ export const handleNavi = (navigate, intersection, role) => {
                 navigate('/')
                 break
         }
+    } else if (role === 'leader') {
+        switch (intersection) {
+            case 'report':
+                navigate('/service/report');
+                break;
+            case 'uploadReport':
+                navigate('/service/uploadReport');
+                break;
+            default:
+                navigate('/service/dashboard');
+                break;
+        }
+    } else if (role === 'owner') {
+        switch (intersection) {
+            case 'report':
+                navigate('/owner/report');
+                break;
+            case 'uploadReport':
+                navigate('/owner/uploadReport');
+                break;
+            default:
+                navigate('/owner/dashboard');
+                break;
+        }
     }
 }
 
 
+export const translate = (authority) => {
+    const level = ['사장', '팀장', '사원'];
+    const index = authority - 3;
 
+    return level[index];
+}
+
+// 체크리스트 만들기 
+export const checkList = (e, item, setClickedList) => {
+    const isChecked = e.target.checked;
+
+    if (isChecked === true) {
+        setClickedList((prevList) => [...prevList, item]);
+    } else {
+        setClickedList((prevList) => prevList.filter((e) => e !== item));
+
+    }
+}
+
+export const handleInputValues = (e, setInputValues) => {
+    const name = e.target.name
+    const value = e.target.value
+
+    setInputValues((prev) => ({
+        ...prev,
+        [name]: value,
+    }))
+}
+
+// 뒤로가기 함수
+export function historyBack(navigate) {
+    navigate(-1);
+}

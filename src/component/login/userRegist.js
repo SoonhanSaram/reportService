@@ -1,26 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { useCommonContext } from '../../provider/common'
 import Modal from './modal'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { historyBack } from '../../js/common';
 
 export const UserRegist = () => {
-    const { openModal, isOpenModal, setClickedCorp, clickedCorp } = useCommonContext();
+    const { openModal, isOpenModal, clickedCorp, setClickedCorp } = useCommonContext();
     const navigate = useNavigate();
+
     // 유저 중복을 확인하기 위한 state
     const [isCertified, setIsCertified] = useState();
     // 비밀번호 일치여부 확인을 위한 state
     const [isCheckedPassword, setIsCheckedPassword] = useState();
-
-    // 재직회사 input 초기화
-    useEffect(() => {
-
-    })
-
-    // 뒤로가기 함수
-    function historyBack() {
-        setClickedCorp('');
-        navigate(-1);
-    }
 
     // 여러 input 을 하나의 state 로 관리
     const [input, setInput] = useState({
@@ -28,7 +19,6 @@ export const UserRegist = () => {
         userPassword: '',
         userPasswordCheck: '',
     })
-
     // 구조 분리된 value 값
     const { userName, userPassword, userPasswordCheck } = input
 
@@ -103,8 +93,9 @@ export const UserRegist = () => {
             const response = await fetch(process.env.REACT_APP_USER_REGIST_URL, fetchOption)
 
             if (response.status === 200) {
-                alert("회원가입이 완료되었습니다.")
-                historyBack()
+                alert("회원가입이 완료되었습니다.");
+                setClickedCorp('');
+                historyBack(navigate);
             } else if (response.status === 403) {
                 alert("회원가입 중 오류가 발생했습니다.")
                 // 새로고침
@@ -131,7 +122,7 @@ export const UserRegist = () => {
                 <span><input disabled={true} name='userCorporation' value={clickedCorp !== undefined ? clickedCorp.corp_name : null} /><button onClick={openModal}>회사 찾기</button></span>
             </div>
             <button className="btn" onClick={() => fetchUserRegist(clickedCorp)}>가입</button>
-            <button className="btn" onClick={historyBack}>뒤로가기</button>
+            <button className="btn" onClick={() => historyBack(navigate)}>뒤로가기</button>
             {isOpenModal ? <Modal /> : null}
         </div>
     )

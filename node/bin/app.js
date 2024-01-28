@@ -10,7 +10,6 @@
 import express from 'express';
 import createError from 'http-errors';
 import path from 'path';
-
 import cors from 'cors'
 
 // 3rd party lib modules  
@@ -22,6 +21,10 @@ import regist from "../routes/regist.js";
 import login from "../routes/login.js";
 import admin from "../routes/admin.js";
 import content from '../routes/content.js';
+import company from '../routes/company.js';
+// chat 용 router
+import chat from '../routes/chat.js';
+
 
 // jwt 인증 미들웨어
 import { authorizationJwt } from '../middleware/authorizationJwt.js';
@@ -62,6 +65,7 @@ app.use(express.static(path.join("public")));
 // jwt 인증 미들웨어 적용
 app.use('/admin', authorizationJwt);
 app.use('/content', authorizationJwt);
+app.use('/company', authorizationJwt);
 app.use('/refresh', refresh)
 
 
@@ -70,6 +74,8 @@ app.use('/regist', regist);
 app.use('/login', login);
 app.use('/admin', admin);
 app.use('/content', content);
+app.use('/company', company);
+app.use('/chat', chat);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -60,22 +60,20 @@ router.post('/corporation', async (req, res, next) => {
     console.log(corNumber, corName, corTel, uName, uPassword);
     const hashedPassword = encryptModule(uPassword);
 
-    const t = await db.sequelize.transaction()
 
+    const t = await db.sequelize.transaction()
     try {
         console.log('체크 0');
         // 여러개의 table 을 사용하므로 트랜잭션 사용
-        const CorporationResponse = await corpInfo.create({ corp_number: corNumber, corp_name: corName, corp_tel: corTel, corp_category: corpCategory }, { transaction: t })
+        await corpInfo.create({ corp_number: corNumber, corp_name: corName, corp_tel: corTel, corp_category: corpCategory }, { transaction: t, logging: (...msg) => console.log(msg) })
         console.log('체크 1');
-        const AdminResponse = await userInfo.create({ user_name: uName, user_password: hashedPassword, user_authority: 1, corp_belongto: corNumber }, { transaction: t })
+        await userInfo.create({ user_name: uName, user_password: hashedPassword, user_authority: 3, corp_belongto: corNumber }, { transaction: t, logging: (...msg) => console.log(msg) })
         console.log('체크 2');
-
         // 에러 없이 실행이 되면 transaction commit 
         await t.commit();
-
         // statusmessage 설정 하고 response 전달
-        res.status(200).send("회원가입이 완료되었습니다.");
 
+        res.status(200).send("회원가입이 완료되었습니다.");
     } catch (error) {
         await t.rollback();
         res.status(500).send("기업 회원가입 중 오류가 발생했습니다.");

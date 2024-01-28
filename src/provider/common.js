@@ -21,6 +21,12 @@ const CommonContextPovider = ({ children }) => {
 
     const cookie = new Cookies();
 
+    // 사원 검색 리스트 
+    const [employee, setEmployee] = useState([]);
+
+    // 클릭된 항목 리스트
+    const [clickedList, setClickedList] = useState([]);
+
     // refreshToken 을 cookie 에서 가져오는 함수
     const getRefreshToken = () => cookie.get('refreshToken')
 
@@ -68,22 +74,7 @@ const CommonContextPovider = ({ children }) => {
         lastDay: new Date(currentTime.getFullYear(), currentTime.getMonth() + 1, 0).getDate(),
     })
 
-    const [inputValues, setInputValues] = useState({
-        toworkDay: undefined,
-        toworkMonth: undefined,
-        toworkYear: undefined,
-        workingTitle: undefined,
-    });
-
-    const handleInputValues = (e) => {
-        const name = e.target.name
-        const value = e.target.value
-
-        setInputValues({
-            ...inputValues,
-            [name]: value,
-        })
-    }
+    const [inputValues, setInputValues] = useState({});
 
     const newDate = (newDate) => {
         function getKoreanDayOfWeek(dayIndex) {
@@ -121,9 +112,6 @@ const CommonContextPovider = ({ children }) => {
         }
 
     }, [])
-
-    console.log(userInfo);
-
 
     function openModal() {
         setIsOpenModal(!isOpenModal)
@@ -171,7 +159,7 @@ const CommonContextPovider = ({ children }) => {
         }
     }
 
-    const props = { openModal, isOpenModal, clickedCorp, setClickedCorp, setUserInfo, userInfo, getToken, memberListInfo, setMemberListInfo, paging, setPaging, validateAndFetch, getRefreshToken, dailyReportList, setDailyReportList, date, handleInputValues, inputValues, cookie, report, setReport }
+    const props = { openModal, isOpenModal, clickedCorp, setClickedCorp, setUserInfo, userInfo, getToken, memberListInfo, setMemberListInfo, paging, setPaging, validateAndFetch, getRefreshToken, dailyReportList, setDailyReportList, date, inputValues, cookie, report, setReport, employee, setEmployee, clickedList, setClickedList, setInputValues }
     return <CommonContext.Provider value={props}>{children}</CommonContext.Provider>;
 }
 

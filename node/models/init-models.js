@@ -5,6 +5,8 @@ import _reportCommon from './reportCommon.js';
 import _dailyReports from './dailyReports.js';
 import _weeklyReports from './weeklyReports.js';
 import _roleinfo from './roleinfo.js';
+import _projectinfo from './projectinfo.js'
+import _projectmember from './projectmember.js'
 
 const initModels = (sequelize) => {
   const corporationinfo = _corporationinfo(sequelize);
@@ -14,6 +16,8 @@ const initModels = (sequelize) => {
   const dailyreports = _dailyReports(sequelize);
   const weeklyreports = _weeklyReports(sequelize);
   const roleinfo = _roleinfo(sequelize);
+  const projectinfo = _projectinfo(sequelize);
+  const projectmember = _projectmember(sequelize);
 
   userinfo.belongsTo(corporationinfo, { as: "corp_belongto_corporationinfo", foreignKey: "corp_belongto" });
   corporationinfo.hasMany(userinfo, { as: "userinfos", foreignKey: "corp_belongto" });
@@ -24,6 +28,12 @@ const initModels = (sequelize) => {
   dailyreports.belongsTo(reportcommon, { as: 'reportcommon', foreignKey: 'report_seq' });
   weeklyreports.belongsTo(reportcommon, { as: 'reportcommon', foreignKey: 'report_seq' });
 
+  userinfo.hasMany(reportcommon, { as: 'reportscommons', foreignKey: "user_name" });
+  reportcommon.belongsTo(userinfo, { as: 'userinfos', foreignKey: "user_name" });
+
+  userinfo.belongsToMany(projectinfo, { as: 'project', through: 'projectmember', foreignKey: 'user_seq', sourceKey: 'user_seq' });
+  projectinfo.belongsToMany(userinfo, { as: 'member', through: 'projectmember', foreignKey: 'pro_seq', sourceKey: 'pro_seq' });
+
   return {
     corporationinfo,
     userinfo,
@@ -32,6 +42,8 @@ const initModels = (sequelize) => {
     dailyreports,
     weeklyreports,
     roleinfo,
+    projectinfo,
+    projectmember,
   };
 }
 export default initModels;
