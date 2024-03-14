@@ -70,7 +70,9 @@ export const refreshUser = async (userInfo, setUserInfo, cookie) => {
 }
 
 export const handleNavi = (navigate, intersection, role) => {
-    console.log(intersection, role);
+
+    // console.log(role, intersection);
+
 
     // switch case 문을 이용한 navigate 이벤트
     if (role === 'admin') {
@@ -107,7 +109,6 @@ export const handleNavi = (navigate, intersection, role) => {
                 break;
         }
     } else if (role === undefined) {
-        console.log('체크1', intersection);
         switch (intersection) {
             case 'cor':
                 navigate('/corRegist')
@@ -138,6 +139,9 @@ export const handleNavi = (navigate, intersection, role) => {
                 break;
             case 'uploadReport':
                 navigate('/owner/uploadReport');
+                break;
+            case 'project':
+                navigate('/owner/project')
                 break;
             default:
                 navigate('/owner/dashboard');

@@ -7,9 +7,13 @@ export const DashBoard = () => {
     // provider 에서 state 가져오기
     const { userInfo, setDailyReportList } = useCommonContext();
 
+
+    /**
     useEffect(() => {
         getSimpleList(0, 5, 'daily', setDailyReportList);
     }, [])
+    */
+
 
     const chart = () => {
         return (

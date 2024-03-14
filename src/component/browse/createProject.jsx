@@ -10,9 +10,11 @@ export const CreateProject = () => {
 
     const inputRef = useRef([]);
 
+    /**
     useEffect(() => {
 
     }, [])
+     */
 
     const cloumnNames = ['프로젝트명', '프로젝트 담당자', '프로젝트 목표', '프로젝트 기간']
     const inputNames = ['title', 'manager', 'objective', 'period'];

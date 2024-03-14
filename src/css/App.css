@@ -1,6 +1,7 @@
 .App {
   height: 90vh;
   text-align: center;
+  font-family: sans-serif;
 }
 
 select {  
@@ -233,11 +234,13 @@ p.accept {
   margin-bottom: 12px;
   width: 1170px;
   margin: 0 auto;
+  border-bottom: 1px solid #222;
 }
 
 #nav1>a {
   display: block; /* a태그는 글자성격 = inline */
   float: left;
+  cursor: pointer;
   font-size: 30px;
   font-weight: 900;
   line-height: 80px;
@@ -248,7 +251,7 @@ p.accept {
 }
 #nav1>ul li {
   float: left;  
-  line-height: 80px;
+  line-height: 40px;
   list-style: none;
 }
 

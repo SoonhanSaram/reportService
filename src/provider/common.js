@@ -58,12 +58,15 @@ const CommonContextPovider = ({ children }) => {
 
     const [report, setReport] = useState();
 
-    const currentTime = new Date();
+
+
     // 요일을 한글로 반환 (함수)
     function getKoreanDayOfWeek(dayIndex) {
         const days = ['일', '월', '화', '수', '목', '금', '토'];
         return days[dayIndex];
     }
+
+    const [currentTime, setCurrentTime] = useState((new Date()));
 
     // 년/월/일/요일 로 date 값 변환
     const [date, setDate] = useState({

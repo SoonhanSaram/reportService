@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useCommonContext } from "../../provider/common";
 import { handleNavi } from "../../js/common";
+import { Chat } from "../common/chat";
 
 export const ProjectMain = () => {
     const { userInfo } = useCommonContext();
@@ -20,6 +21,7 @@ export const ProjectMain = () => {
             <div className="flex-item-right">
                 <p>프로젝트 현황</p>
             </div>
+            <Chat />
         </div>
     )
 }

@@ -66,7 +66,8 @@ app.use(express.static(path.join("public")));
 app.use('/admin', authorizationJwt);
 app.use('/content', authorizationJwt);
 app.use('/company', authorizationJwt);
-app.use('/refresh', refresh)
+app.use('/chat', authorizationJwt);
+app.use('/refresh', refresh);
 
 
 // router link enable

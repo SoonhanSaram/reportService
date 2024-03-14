@@ -42,7 +42,6 @@ export const Login = () => {
                 <button className="btn" onClick={() => handleNavi(navigate, 'cor',)}>기업회원가입</button>
                 <button className="btn" onClick={() => handleNavi(navigate, 'user',)}>유저회원가입</button>
             </div>
-            <Chat />
         </div>
     )
 }
