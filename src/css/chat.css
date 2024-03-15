@@ -1,0 +1,74 @@
+.chat_background {
+    min-width: 400px;
+    height: 300px;
+    background-color: whitesmoke;
+    border: 1px solid black;
+    margin: 15px 0px;
+    display: flex;
+    flex-direction: column;
+    /* position 을 relative 하면서 absolute 하게 쓰고싶어 */
+    position: inherit;
+    bottom: 35px;
+    right: 0px;
+}
+
+.chat_header {
+    background-color: rgb(100, 100, 233);
+    border-bottom: 1px solid black;
+}
+
+.chat_box {
+    /* flex 의 item 끼리 마진을 없애줘 */
+    padding: 5px 10px;
+    color: black;
+    min-width: 400px;
+    height: 250px;
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-y: auto;
+    gap: 0;
+}
+
+.inline_chat_right {
+    margin: 0;
+    padding: 2px;
+    border: 1px solid black;
+    border-radius: 8px;
+    margin-left : auto;
+}
+
+.inline_chat_left {
+    margin: 0;
+    padding: 2px;    
+    border: 1px solid black;
+    border-radius: 8px;
+    margin-right: auto;
+}
+
+.inline_chat_center {
+    margin: 0;
+    padding: 5px;    
+    border: 1px solid black;
+    border-radius: 8px;
+    margin: 8px auto 0px auto;
+}
+
+.chat_buttons{
+    position: absolute;
+    background-color: silver;
+    z-index: 10;
+    right: 0;
+    left: 0;
+    bottom:0;
+}
+
+.input_message {
+    /* 채팅 애플리케이션 input 에 잘쓰이는 css 모양으로 만들어줘 */
+    width: 50%;
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 5px;
+}

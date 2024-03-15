@@ -5,6 +5,7 @@ import http from 'http';
 import app from './app.js';
 import createDebug from 'debug';
 import { Server } from 'socket.io';
+import { countPeople } from '../public/js/chat.js';
 
 // port number check
 const normalizePort = (val) => {
@@ -42,16 +43,23 @@ export const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-  const socketId = socket['id'];
-  const company = socket['userBelongto'];
+  // socket 의 id 키로 넘겨준 값이 들어간다.
+  const { id, authority, belongto } = socket.handshake.query;
+
+  const socketId = id;
+  const company = belongto;
+
+  console.log(socketId, company);
 
   // console.log('socketId', socketId);
 
-  console.log(sockets);
+  // console.log(sockets);
   // console.log('connect 소켓', socket);
   if (sockets[socketId]) {
     // 중복된 socketId가 존재한다면 기존에 존재하는 소켓을 disconnect 시키는 함수를 만들어줘야 한다.
-    socket.disconnect();
+    // 중복된 socketId 를 sockets 에서 삭제하고 disconnect 시킨다.
+    sockets[socketId].disconnect();
+    sockets[socketId] = null;
   } else {
     sockets[socketId] = socket;
   }
@@ -59,9 +67,11 @@ io.on('connection', (socket) => {
 
   socket.on('joinRoom', () => {
     socket.join(company);
-    console.log(socketId);
+    console.log('joinRoom', company);
     // const count = countPeople(id.corporation);
-    io.to(company).emit('msg', `${socketId}님이 입장하셨습니다.`);
+    const count = countPeople(io, company);
+    io.to(company).emit('infos', { message: null, id: null, count: count, roomName: company });
+    io.to(company).emit('msg', { message: `${socketId}님이 입장하셨습니다.`, id: null });
   });
 
   socket.on('msg', (msg) => {
@@ -71,6 +81,7 @@ io.on('connection', (socket) => {
 
   socket.on('leaveRoom', (room) => {
     socket.leave(company);
+    io.to(company).emit('infos', { message: null, id: null, count: count, roomName: company });
     io.to(company).emit('msg', `${socketId}님이 퇴장하셨습니다.`);
   });
 })

@@ -107,7 +107,9 @@ thead {
 }
 
 .warpper {  
+  position : relative;
   max-width: 1170px;
+  height: 100%;
   margin: 0 auto;
 }
 
@@ -423,3 +425,21 @@ table td div textarea {
 .table-type2 {
   width:100%;
 }
+
+/* 화면 아래쪽에 채팅창을 담아두는 bar 를 하나 만들고싶어 */
+/* 이 bar 는 화면 아래쪽에 고정되어있어야해 */
+.under_bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #7baced;
+  color: white;
+  text-align: center;
+  line-height: 50px;
+  font-size: 20px;
+  font-weight: 700;
+  z-index: 100;
+  cursor: pointer;
+}
+

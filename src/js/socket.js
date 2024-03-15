@@ -2,15 +2,32 @@ import { io, Manager } from "socket.io-client";
 import { getToken } from "./common";
 
 
-const manager = new Manager('ws://localhost:3010', { transports: ['websocket'], autoConnect: false });
+let manager = new Manager('ws://localhost:3010', {
+    transports: ['websocket'], autoConnect: false, query: {
+        id: null,
+        authority: null,
+        belongto: null,
+    }
+});
 
-export let socketClient = manager.socket('/');
+export let socketClient = null;
 
 export const initsocket = async (userInfo) => {
-    const { userName, userAuthority, userBelongto, isLogin } = userInfo;
+    const { userName, userAuthority, userBelongto } = userInfo;
+    console.log(userName, userAuthority, userBelongto);
 
-    if (socketClient === undefined || socketClient?.connected === false) {
-        const token = getToken();
+    manager = new Manager('ws://localhost:3010', {
+        transports: ['websocket'], autoConnect: false, query: {
+            id: userName,
+            authority: userAuthority,
+            belongto: userBelongto,
+        }
+    });
+
+    if (socketClient === null || socketClient?.connected === false) {
+
+        socketClient = manager.socket('/');
+        console.log(socketClient);
 
         // const fetchOption = {
         //     method: 'POST',
@@ -22,10 +39,11 @@ export const initsocket = async (userInfo) => {
         // const result = await response.json();
 
         // socket 에 연결할 때 client 정보를 넘기고 싶어서 아래와 같이 넘겨줌
-        socketClient.connect({ id: userName, authority: userAuthority, belongto: userBelongto });
 
 
-        socketClient.emit('joinRoom', { room: '1번프로젝트입니다.' })
+        socketClient.connect();
+
+        socketClient.emit('joinRoom');
 
         // console.log('핑 던지기 ');
         // 
@@ -36,8 +54,6 @@ export const initsocket = async (userInfo) => {
         // socketClient.on('pong', (pong) => {
         // pong ? pingPong = true : pingPong = false;
         // })
-
-
 
         /**
         setTimeout(async () => {
@@ -74,6 +90,7 @@ export const sendMessage = (input, id) => {
     //     initsocket();
     // };    
     // socketClient === null || socketClient?.connected === false ? alert('접속되지 않았습니다.') : input.message == '' || null ? alert('메시지를 입력해주세요') : socketClient.emit('msg', { message: input.message, id: id });
+    console.log(input.message, id, 'socket', socketClient);
 
 
     if (socketClient !== undefined && socketClient?.connected === true) {
@@ -83,7 +100,12 @@ export const sendMessage = (input, id) => {
 
 
 
-export const receiveMessage = (setMessageRecived) => {
+export const receiveMessage = (setMessageRecived, setRoomInfo) => {
+
+    socketClient.on('infos', async (infos) => {
+        if (infos) setRoomInfo(infos);
+        else return;
+    });
 
     socketClient.on('msg', async msg => {
         console.log(msg);
@@ -93,15 +115,12 @@ export const receiveMessage = (setMessageRecived) => {
 
 }
 
-export const disconnectSocket = () => {
+export const disconnectSocket = (setSocket) => {
 
     if (socketClient === undefined || socketClient?.connected === false) {
         return;
     }
     socketClient.disconnect();
 
-    socketClient = undefined;
-
-    console.log(socketClient);
-
+    setSocket(null);
 }
