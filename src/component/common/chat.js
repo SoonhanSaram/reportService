@@ -24,6 +24,7 @@ export const Chat = () => {
     }
 
     useEffect(() => {
+        initsocket(userInfo);
         receiveMessage(setMessageRecived);
     }, []);
 

@@ -32,12 +32,48 @@ const port = normalizePort(process.env.PORT || "3010");
  */
 const server = http.createServer(app);
 
+let sockets = {};
+
 export const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
+
+io.on('connection', (socket) => {
+  const socketId = socket['id'];
+  const company = socket['userBelongto'];
+
+  // console.log('socketId', socketId);
+
+  console.log(sockets);
+  // console.log('connect 소켓', socket);
+  if (sockets[socketId]) {
+    // 중복된 socketId가 존재한다면 기존에 존재하는 소켓을 disconnect 시키는 함수를 만들어줘야 한다.
+    socket.disconnect();
+  } else {
+    sockets[socketId] = socket;
+  }
+
+
+  socket.on('joinRoom', () => {
+    socket.join(company);
+    console.log(socketId);
+    // const count = countPeople(id.corporation);
+    io.to(company).emit('msg', `${socketId}님이 입장하셨습니다.`);
+  });
+
+  socket.on('msg', (msg) => {
+    msg === '' || null ? null : io.to(company).emit('msg', msg);
+    console.log(msg);
+  });
+
+  socket.on('leaveRoom', (room) => {
+    socket.leave(company);
+    io.to(company).emit('msg', `${socketId}님이 퇴장하셨습니다.`);
+  });
+})
 
 
 server.listen(port);

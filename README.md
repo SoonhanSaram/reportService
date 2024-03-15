@@ -19,3 +19,6 @@ yarn add react-cookie
 - 프로젝트를 진행하면서 body 나 queryString 으로 user 정보를 보냈으나,
 모든 요청에 jwt 를 보내서 인증을 하고 있었기 때문에 프론트에서 정보를 보내는 방식
 보다는 백에서 jwt 를 이용해서 추출하는 방식으로 변경
+
+# 이슈 
+- socket이 중첩되서 생성되는 이슈 제거(2024-03-15) : route 단에서 만든 socket 의 io 가 중첩되서 생성되는 문제점 발견 app 전역에 socket 생성으로 이슈 제거

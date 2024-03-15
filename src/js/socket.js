@@ -6,21 +6,24 @@ const manager = new Manager('ws://localhost:3010', { transports: ['websocket'], 
 
 export let socketClient = manager.socket('/');
 
-export const initsocket = async () => {
+export const initsocket = async (userInfo) => {
+    const { userName, userAuthority, userBelongto, isLogin } = userInfo;
+
     if (socketClient === undefined || socketClient?.connected === false) {
         const token = getToken();
 
-        const fetchOption = {
-            method: 'POST',
-            headers: {
-                'authorization': `Bearer ${token}`
-            }
-        }
-        const response = await fetch('/chat', fetchOption);
-        const result = await response.json();
+        // const fetchOption = {
+        //     method: 'POST',
+        //     headers: {
+        //         'authorization': `Bearer ${token}`
+        //     }
+        // }
+        // const response = await fetch('/chat', fetchOption);
+        // const result = await response.json();
 
+        // socket 에 연결할 때 client 정보를 넘기고 싶어서 아래와 같이 넘겨줌
+        socketClient.connect({ id: userName, authority: userAuthority, belongto: userBelongto });
 
-        socketClient.connect();
 
         socketClient.emit('joinRoom', { room: '1번프로젝트입니다.' })
 
