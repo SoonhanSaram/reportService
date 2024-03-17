@@ -21,7 +21,7 @@
     /* flex 의 item 끼리 마진을 없애줘 */
     padding: 5px 10px;
     color: black;
-    min-width: 400px;
+    width: 400px;
     height: 250px;
     border-bottom: 1px solid black;
     display: flex;

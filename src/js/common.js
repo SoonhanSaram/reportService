@@ -174,6 +174,21 @@ export const handleInputValues = (e, setInputValues) => {
     const name = e.target.name
     const value = e.target.value
 
+    // name 이 image 일 때, binary 형태로 변환하여 저장
+    // name key 의 value 는 파일명으로 저장 
+    // file 에는 binary 형태로 저장
+    if (name === 'image') {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            setInputValues((prev) => ({
+                ...prev,
+                [name]: file.name,
+                file: reader.result,
+            }))
+        }
+    }
     setInputValues((prev) => ({
         ...prev,
         [name]: value,

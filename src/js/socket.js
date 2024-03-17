@@ -92,8 +92,11 @@ export const sendMessage = (input, id) => {
     // socketClient === null || socketClient?.connected === false ? alert('접속되지 않았습니다.') : input.message == '' || null ? alert('메시지를 입력해주세요') : socketClient.emit('msg', { message: input.message, id: id });
     console.log(input.message, id, 'socket', socketClient);
 
-
-    if (socketClient !== undefined && socketClient?.connected === true) {
+    // image 파일 전송
+    if (input.image && socketClient !== undefined && socketClient?.connected === true) {
+        const file = input.file;
+        socketClient.emit('msg', { message: input.message, id: id, file: file });
+    } else {
         input.message == '' || null ? alert('메시지를 입력해주세요') : socketClient.emit('msg', { message: input.message, id: id })
     }
 }
@@ -104,6 +107,11 @@ export const receiveMessage = (setMessageRecived, setRoomInfo) => {
 
     socketClient.on('infos', async (infos) => {
         if (infos) setRoomInfo(infos);
+        else return;
+    });
+
+    socketClient.on('image', async (image) => {
+        if (image) setMessageRecived(prev => [...prev, image]);
         else return;
     });
 

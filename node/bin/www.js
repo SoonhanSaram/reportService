@@ -74,6 +74,12 @@ io.on('connection', (socket) => {
     io.to(company).emit('msg', { message: `${socketId}님이 입장하셨습니다.`, id: null });
   });
 
+  // image 수신
+  socket.on('image', (image) => {
+    console.log('image', image);
+    io.to(company).emit('image', image);
+  });
+
   socket.on('msg', (msg) => {
     msg === '' || null ? null : io.to(company).emit('msg', msg);
     console.log(msg);
