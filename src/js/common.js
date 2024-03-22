@@ -199,3 +199,32 @@ export const handleInputValues = (e, setInputValues) => {
 export function historyBack(navigate) {
     navigate(-1);
 }
+
+// drag & drop 으로 이미지 업로드
+export const handleDrop = (e, setInputValues, setDragOver) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const file = e.dataTransfer.files[0];
+
+    const reader = new FileReader();
+    if (file) {
+        console.log('file', file);
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            setInputValues((prev) => ({
+                ...prev,
+                image: file.name,
+                file: reader.result,
+            }))
+        }
+        setDragOver(false);
+    } else return;
+}
+
+// binany 형태의 이미지를 다운로드 하는 함수
+
+// 인쇄할 수 있도록 하는 함수
+export const print = () => {
+    window.print();
+}

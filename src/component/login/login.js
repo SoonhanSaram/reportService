@@ -35,7 +35,7 @@ export const Login = () => {
     return (
         <div id="container">
             <div className="regist">
-                <h2 className="title">보고, 보고서 로그인</h2>
+                <h2 className="title">보고, 또 보고 로그인</h2>
                 <input placeholder="아이디" name="userName" onChange={onChangeInput} onKeyDown={(e) => pressEnter(e)} />
                 <input placeholder="비밀번호" type="password" name="userPassword" onChange={onChangeInput} onKeyDown={(e) => pressEnter(e, () => userLogin(input, process.env.REACT_APP_USER_LOGIN, setUserInfo, userInfo, navigate))} />
                 <button className="btn" onClick={() => userLogin(input, process.env.REACT_APP_USER_LOGIN, setUserInfo, userInfo, navigate)}>로그인</button>

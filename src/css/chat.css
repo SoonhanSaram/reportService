@@ -31,20 +31,52 @@
     gap: 0;
 }
 
-.inline_chat_right {
+.inline_image{
+    width: 100px;
+    height: 100px;
     margin: 0;
-    padding: 2px;
+    padding: 0;
     border: 1px solid black;
     border-radius: 8px;
+}
+
+.inline_chat_right_wrapper {
+    margin: 0;
+    padding: 1px;    
+    margin-left : auto;
+    display: inline-block;
+}
+
+.inline_chat_right_name {
     margin-left : auto;
 }
 
-.inline_chat_left {
+.inline_chat_right_message {    
+    margin: 0;
+    padding: 0px 10px;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color: goldenrod;
+    color : white
+}
+
+.inline_chat_left_wrapper {
     margin: 0;
     padding: 2px;    
     border: 1px solid black;
     border-radius: 8px;
     margin-right: auto;
+}
+
+.inline_chat_left_name {
+    margin-right: auto;
+}
+
+.inline_chat_left_message {
+    margin: 0;
+    padding: 0px 10px;
+    border-radius: 8px;
+    background-color: lightgray;
 }
 
 .inline_chat_center {

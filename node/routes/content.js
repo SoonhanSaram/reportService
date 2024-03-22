@@ -1,12 +1,15 @@
 import express from 'express'
 import db from "../models/index.js"
 import { Op, QueryTypes } from 'sequelize';
+import { callGPT } from '../public/js/chatGPT.js';
 
 const corporationinfo = db.models.corporationinfo
 const userinfo = db.models.userinfo;
 const reportCommon = db.models.reportcommon;
 const daily = db.models.dailyreports;
 const weekly = db.models.weeklyreports;
+
+
 
 const router = express.Router();
 /***********************
@@ -78,6 +81,15 @@ router.get('/getReports', async (req, res) => {
     }
 
 })
+
+router.post('/AiRecommendation', async (req, res) => {
+    console.log('AiRecommendation 진입')
+    const { workingTitle, contents } = req.body
+
+    const gptResponse = await callGPT(workingTitle, contents);
+
+    res.status(200).send({ message: '보고서 내용 보충 성공', gptResponse });
+});
 
 router.post('/uploadReport', async (req, res) => {
     //  트랜잭션 사용

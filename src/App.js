@@ -18,10 +18,10 @@ export const App = ({ role }) => {
       {/* Outlet 을 활용한 네비게이션 */}
       <div className="warpper">
         <PrivateRouter role={role} />
-        <div className='under_bar'  >
-          <span onClick={handleChat} >채팅창</span>
-          {showChat ? <Chat /> : null}
-        </div>
+        {/* <div className='under_bar'  > */}
+        {/* <span onClick={handleChat} >채팅창</span> */}
+        {/* {showChat ? <Chat /> : null} */}
+        {/* </div> */}
       </div>
     </div>
   );

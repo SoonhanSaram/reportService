@@ -1,5 +1,7 @@
 // reportCommon.js
 
+import { getToken } from "./common";
+
 // 제출한 date 를 변환하는 함수
 export function formatDate(date) {
     const formedDate = date.slice(0, 10);

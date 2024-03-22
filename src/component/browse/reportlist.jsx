@@ -3,6 +3,8 @@ import { useCommonContext } from "../../provider/common"
 import { Paging } from "../common/pagination";
 import { formatDate, formatStatus, formatReportType } from '../../js/reportCommon.js'
 import { DailyReport } from "./dailyReport.jsx";
+import { handleNavi } from "../../js/common.js";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 export const ReportList = () => {
@@ -10,6 +12,7 @@ export const ReportList = () => {
 
     const [detail, setDetail] = useState(false);
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const navigate = useNavigate();
 
     const getList = async (offset, limit) => {
         const qeueryString = new URLSearchParams({
@@ -85,6 +88,7 @@ export const ReportList = () => {
                 </tbody>
             </table>
             <Paging callback={getList} />
+            <button className='btn' onClick={() => handleNavi(navigate, 'uploadReport', userInfo.userAuthority)}>보고서 작성</button>
             {isOpenModal ?
                 <div className="modal_box">
                     <div id='reportWrapper'>

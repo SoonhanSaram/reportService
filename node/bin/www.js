@@ -58,6 +58,7 @@ io.on('connection', (socket) => {
   if (sockets[socketId]) {
     // 중복된 socketId가 존재한다면 기존에 존재하는 소켓을 disconnect 시키는 함수를 만들어줘야 한다.
     // 중복된 socketId 를 sockets 에서 삭제하고 disconnect 시킨다.
+
     sockets[socketId].disconnect();
     sockets[socketId] = null;
   } else {
@@ -72,6 +73,7 @@ io.on('connection', (socket) => {
     const count = countPeople(io, company);
     io.to(company).emit('infos', { message: null, id: null, count: count, roomName: company });
     io.to(company).emit('msg', { message: `${socketId}님이 입장하셨습니다.`, id: null });
+
   });
 
   // image 수신
@@ -82,7 +84,7 @@ io.on('connection', (socket) => {
 
   socket.on('msg', (msg) => {
     msg === '' || null ? null : io.to(company).emit('msg', msg);
-    console.log(msg);
+    // console.log(msg);
   });
 
   socket.on('leaveRoom', (room) => {

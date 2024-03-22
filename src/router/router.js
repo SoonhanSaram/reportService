@@ -79,9 +79,9 @@ export const Router = createBrowserRouter([
                 {
                     path: "/owner/project", element: <ProjectMain />
                 },
-                {
-                    path: '/owner/uploadReport', element: <UploadReport />
-                },
+                // {
+                //     path: '/owner/uploadReport', element: <UploadReport />
+                // },
                 {
                     path: '/owner/report', element: <ReportMain />
                 },

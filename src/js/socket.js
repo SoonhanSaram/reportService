@@ -85,7 +85,7 @@ const ping = async (socketClient) => {
     })
 }
 
-export const sendMessage = (input, id) => {
+export const sendMessage = (input, id, setInputValues) => {
     // if (socketClient === null || socketClient.connected === false) {
     //     initsocket();
     // };    
@@ -93,9 +93,11 @@ export const sendMessage = (input, id) => {
     console.log(input.message, id, 'socket', socketClient);
 
     // image 파일 전송
-    if (input.image && socketClient !== undefined && socketClient?.connected === true) {
+    if (input.file && socketClient !== undefined && socketClient?.connected === true) {
         const file = input.file;
-        socketClient.emit('msg', { message: input.message, id: id, file: file });
+        socketClient.emit('image', { message: input.message, id: id, file: file });
+        // state 초기화
+        setInputValues({ file: null, image: null });
     } else {
         input.message == '' || null ? alert('메시지를 입력해주세요') : socketClient.emit('msg', { message: input.message, id: id })
     }
@@ -110,7 +112,10 @@ export const receiveMessage = (setMessageRecived, setRoomInfo) => {
         else return;
     });
 
+
+
     socketClient.on('image', async (image) => {
+        console.log(image);
         if (image) setMessageRecived(prev => [...prev, image]);
         else return;
     });

@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useCommonContext } from "../../provider/common";
 import { exportWithExcel } from "../../js/reportxlsx.js";
+import { AIRecommendation } from "../../js/apis/api/report.js";
+import { print } from "../../js/common.js";
 
 export const UploadReport = () => {
 
@@ -18,6 +20,8 @@ export const UploadReport = () => {
     const [checked, setChecked] = useState(false);
 
     const [reportType, setReportType] = useState('1');
+
+
 
     const handleReportType = (e) => {
         setInputValues({
@@ -77,8 +81,6 @@ export const UploadReport = () => {
                         toworkYear: year.toString(),
                     }
                 }
-
-                console.log(reportType);
                 const fetchOption = {
                     method: 'POST',
                     headers: {
@@ -344,6 +346,9 @@ export const UploadReport = () => {
             </div>
             {reportType === '1' ? dayReport() : reportType === '2' ? weekReport() : reportType === '3' ? null : null}
             <div className="button-wrapper">
+                <button className="btn" onClick={() => print}>미리보기</button>
+                <button className="btn" onClick={() => AIRecommendation(inputValues)}>AI 추천</button>
+                <button className="btn" onClick={() => window.history.back()}>취소</button>
                 <button className="btn" onClick={() => exportWithExcel(day, month, year, dayOfWeek, inputValues, userInfo, reportType)}>엑셀로 내보내기</button>
                 <button className="btn" onClick={uploadReport}>저장하기</button>
             </div>
